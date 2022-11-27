@@ -1,29 +1,42 @@
-name: Deploy
+# This workflow uses actions that are not certified by GitHub.
+# They are provided by a third-party and are governed by
+# separate terms of service, privacy policy, and support
+# documentation.
+
+# This workflow will install Deno and run tests across stable and nightly builds on Windows, Ubuntu and macOS.
+# For more information see: https://github.com/denolib/setup-deno
+
+name: Build and Deploy
 
 on:
   push:
-    branches:
-      - main
+    branches: [main]
+  pull_request:
+    branches: [main]
 
 jobs:
-  deploy:
-    runs-on: ubuntu-latest
+  build:
+    runs-on: ${{ matrix.os }} # runs a test on Ubuntu, Windows and macOS
+
+    strategy:
+      matrix:
+        node: [16]
+        os: [ubuntu-latest]
+
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v1
+      - name: Use Node.js 15.x
+        uses: actions/setup-node@v1
         with:
-          fetch-depth: 0
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 16
-          cache: yarn
-      - run: yarn install --frozen-lockfile
+          node-version: 15.x
 
-      - name: Build
-        run: yarn build
+      - name: yarn install, build
+        run: |
+          yarn
+          yarn build
 
-      - name: Deploy
-        uses: peaceiris/actions-gh-pages@v3
+      - name: Deploy To Github.io 🚀
+        uses: JamesIves/github-pages-deploy-action@4.1.5
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: docs/.vitepress/dist
-          # cname: example.com # if wanna deploy to custom domain
+          BRANCH: gh-pages
+          FOLDER: docs/.vitepress/dist
