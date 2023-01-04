@@ -1,0 +1,15 @@
+@media (min-width: 1440px) {
+  .VPDoc:not(.has-sidebar) {
+    .container {
+      max-width: unset !important;
+
+      .content {
+        max-width: unset !important;
+
+        .content-container {
+          max-width: unset !important;
+        }
+      }
+    }
+  }
+}
