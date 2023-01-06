@@ -54,7 +54,7 @@ export default {
 
     algolia: {
       appId: "NTK6UE6C60",
-      apiKey: "e04b2af42199559bc5ded7ce310f4a05",
+      apiKey: "978a34e34575102884fd83825053de4c",
       indexName: "java-blog",
       placeholder: "Ctrl + K",
       buttonText: "Search",
