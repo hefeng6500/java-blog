@@ -2,17 +2,17 @@
 layout: home
 
 hero:
-  name: VitePress
-  text: Vite & Vue powered static site generator.
-  tagline: Lorem ipsum...
+  name: Java Lesson
+  text: Java SE To Spring
+  tagline: 一个从 JavaScript 走来的 Java 新手
   image:
-    src: /logo.png
+    src: /java.png
     alt: VitePress
   actions:
     - theme: brand
       text: Get Started
-      link: /guide/what-is-vitepress
+      link: /java/
     - theme: alt
       text: View on GitHub
-      link: https://github.com/vuejs/vitepress
+      link: https://github.com/hefeng6500/javaSE
 ---
