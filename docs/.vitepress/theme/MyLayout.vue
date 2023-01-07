@@ -41,7 +41,7 @@ watch(
 
 <template>
   <Layout>
-    <template #layout-bottom>
+    <template #doc-after>
       <div>
         <!-- <Comment v-if="enableComment" /> -->
         <UtterancCommment v-if="enableComment" />
