@@ -50,6 +50,10 @@ export default {
           { text: "Spring Boot", link: "/spring-boot/" },
         ],
       },
+      {
+        text: "项目实战",
+        items: [{ text: "瑞吉外卖", link: "/demo/rjwm" }],
+      },
     ],
 
     algolia: {
