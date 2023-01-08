@@ -52,7 +52,18 @@ export default {
       },
       {
         text: "项目实战",
-        items: [{ text: "瑞吉外卖", link: "/demo/rjwm" }],
+        items: [
+          {
+            text: "瑞吉外卖",
+            link: "/demo/reggie/",
+            items: [
+              {
+                text: "环境搭建",
+                link: "/demo/reggie/env/",
+              },
+            ],
+          },
+        ],
       },
     ],
 
