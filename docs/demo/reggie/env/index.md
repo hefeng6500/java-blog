@@ -2,6 +2,20 @@
 
 ## 数据库环境搭建（建库建表）
 
+| **序号** | **表名**      | **说明**         |
+| -------- | ------------- | ---------------- |
+| 1        | employee      | 员工表           |
+| 2        | category      | 菜品和套餐分类表 |
+| 3        | dish          | 菜品表           |
+| 4        | setmeal       | 套餐表           |
+| 5        | setmeal_dish  | 套餐菜品关系表   |
+| 6        | dish_flavor   | 菜品口味关系表   |
+| 7        | user          | 用户表（C 端）   |
+| 8        | address_book  | 地址簿表         |
+| 9        | shopping_cart | 购物车表         |
+| 10       | orders        | 订单表           |
+| 11       | order_detail  | 订单明细表       |
+
 ```sql
 DROP DATABASE IF EXISTS reggie;
 
@@ -386,5 +400,193 @@ CREATE TABLE `user` (
   `status` int(11) DEFAULT '0' COMMENT '状态 0:禁用，1:正常',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='用户信息';
+
+```
+
+直接导入 sql 脚本
+
+```mysql
+source D://mysql/db_reggie.sql
+```
+
+## maven 项目搭建
+
+1. 创建工程名： `reggie_take_out`
+
+2. 导入 pom.xml 文件
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.4.5</version>
+        <relativePath/> <!-- lookup parent from repository -->
+    </parent>
+
+    <groupId>com.yang</groupId>
+    <artifactId>reggie_take_out</artifactId>
+    <version>1.0-SNAPSHOT</version>
+
+    <properties>
+        <java.version>1.8</java.version>
+        <maven.compiler.source>8</maven.compiler.source>
+        <maven.compiler.target>8</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <dependencies>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus-boot-starter</artifactId>
+            <version>3.4.2</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.20</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>1.2.76</version>
+        </dependency>
+
+        <dependency>
+            <groupId>commons-lang</groupId>
+            <artifactId>commons-lang</artifactId>
+            <version>2.6</version>
+        </dependency>
+
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>druid-spring-boot-starter</artifactId>
+            <version>1.1.23</version>
+        </dependency>
+
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>2.4.5</version>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>
+```
+
+3. 创建 Spring Boot 配置文件 application.yml
+
+```yml
+server:
+  port: 8080
+spring:
+  application:
+    #    应用的名称，可选
+    name: reggie_take_out
+  datasource:
+    druid:
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      url: jdbc:mysql://localhost:3306/reggie?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&useSSL=false&allowPublicKeyRetrieval=true
+      username: root
+      password: 123456
+mybatis-plus:
+  configuration:
+    # 在映射实体或者属性时，将数据库中表名和字段名中的下划线去掉，按照驼峰命名法映射
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  global-config:
+    db-config:
+      id-type: ASSIGN_ID
+```
+
+4. 编写启动类
+
+```java
+// java/com/yang/reggie/ReggieApplication.java
+package com.yang.reggie;
+
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@Slf4j
+@SpringBootApplication
+public class ReggieApplication {
+    public static void main(String[] args) {
+        SpringApplication.run(ReggieApplication.class, args);
+        log.info("项目启动成功！");
+    }
+}
+```
+
+启动 `ReggieApplication` 类，测试项目是否运行成功！
+
+5. 导入前端资源，包括 js、css、img、html 等 （位置：资源/前端资源）
+
+![](assets/1.png)
+
+6. 创建配置类 WebMvcConfig，设置静态资源映射，否则无法访问页面
+
+```java
+package com.yang.reggie.config;
+
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
+
+@Slf4j
+@Configuration
+public class WebMvcConfig extends WebMvcConfigurationSupport {
+
+    /**
+     * 设置静态资源映射
+     * @param registry
+     */
+    @Override
+    protected void addResourceHandlers(ResourceHandlerRegistry registry) {
+        log.info("开始进行静态资源映射");
+
+        // classpath 对应 resource 目录
+        registry.addResourceHandler("/backend/**").addResourceLocations("classpath:/backend/");
+        registry.addResourceHandler("/front/**").addResourceLocations("classpath:/front/");
+    }
+}
 
 ```
