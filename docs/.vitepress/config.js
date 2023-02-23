@@ -61,6 +61,10 @@ export default {
                 text: "环境搭建",
                 link: "/demo/reggie/env/",
               },
+              {
+                text: "登录功能开发",
+                link: "/demo/reggie/login/",
+              },
             ],
           },
         ],
