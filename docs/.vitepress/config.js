@@ -65,6 +65,22 @@ export default {
                 text: "登录功能开发",
                 link: "/demo/reggie/login/",
               },
+              {
+                text: "员工管理功能开发",
+                link: "/demo/reggie/employee/",
+              },
+              {
+                text: "分类管理功能开发",
+                link: "/demo/reggie/category/",
+              },
+              {
+                text: "菜品管理功能开发",
+                link: "/demo/reggie/category/",
+              },
+              {
+                text: "订单明细功能开发",
+                link: "/demo/reggie/orders/",
+              },
             ],
           },
         ],
