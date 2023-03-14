@@ -6,11 +6,16 @@ export default {
   themeConfig: {
     sidebar: [
       {
-        text: "JavaSE",
+        text: "Java基础",
         items: [
-          { text: "JavaSE基础", link: "/java/java-base/" },
-          { text: "JavaSE进阶", link: "/java/java-advanced/" },
+          { text: "Java基础", link: "/java/java-base/" },
+          { text: "面向对象", link: "/java/java-base/object-oriented" },
+          { text: "常用 API", link: "/java/java-base/java-api" },
         ],
+      },
+      {
+        text: "Java进阶",
+        items: [{ text: "JavaSE进阶", link: "/java/java-advanced/" }],
       },
       {
         text: "Spring",
