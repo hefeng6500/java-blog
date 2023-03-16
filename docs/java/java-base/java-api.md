@@ -85,12 +85,83 @@ public class String01 {
 
 **特例：**
 
+
 ```java
   String s1 = "abc";
   String s2 = "a" + "b" + "c";
   System.out.println(s1 == s2); // true
 ```
 
-**Java 存在编译优化机制，程序在编译时："a" + "b" + "c" 会直接转成 "abc"**
+
+
+**API**
+
+| 方法名                                                       | 说明                                                     |
+| ------------------------------------------------------------ | -------------------------------------------------------- |
+| public int length()                                          | 返回此字符串的长度                                       |
+| public char charAt(int index)                                | 获取某个索引位置处的字符                                 |
+| public char[] toCharArray()：                                | 将当前字符串转换成字符数组返回                           |
+| public String substring(int beginIndex, int endIndex)        | 根据开始和结束索引进行截取，得到新的字符串（包前不包后） |
+| public String substring(int beginIndex)                      | 从传入的索引处截取，截取到末尾，得到新的字符串           |
+| public String replace(CharSequence target, CharSequence replacement) | 使用新值，将字符串中的旧值替换，得到新的字符串           |
+| public String[] split(String regex)                          | 根据传入的规则切割字符串，得到字符串数组返回             |
+
+
 
 ## ArrayList
+
+**数组**： 类型确定，长度固定
+**集合**：集合的大小不固定，启动后可以动态变化，类型也可以选择不固定
+
+
+
+```java
+import java.util.ArrayList;
+
+public class ArrayList01 {
+    public static void main(String[] args) {
+        ArrayList arrayList = new ArrayList<>();
+
+        arrayList.add("Hello");
+        arrayList.add("World");
+        arrayList.add(100);
+        arrayList.add(99.99);
+        arrayList.add(true);
+        arrayList.add(1, "测试");
+
+        System.out.println(arrayList);
+    }
+}
+```
+
+
+
+| 方法名                               | 说明                               |
+| ------------------------------------ | ---------------------------------- |
+| public boolean add(E e)              | 将指定的元素追加到此集合的末尾     |
+| public void add(int index,E element) | 在此集合中的指定位置插入指定的元素 |
+|                                      |                                    |
+
+集合对象的**泛型**
+
+```java
+import java.util.ArrayList;
+
+public class ArrayList02 {
+    public static void main(String[] args) {
+        ArrayList<String> arrayList = new ArrayList<>();
+
+        arrayList.add("Hello");
+        arrayList.add("world");
+//        arrayList.add(1); 编译时报错
+
+
+        ArrayList<Integer> arrayList1 = new ArrayList<>();
+//        ArrayList<int> arrayList1 = new ArrayList<>(); 编译时报错
+
+        arrayList1.add(12);
+    }
+}
+
+```
+
