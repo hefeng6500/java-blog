@@ -512,7 +512,7 @@ source D://mysql/db_reggie.sql
 
 3. 创建 Spring Boot 配置文件 application.yml
 
-```yml
+```
 server:
   port: 8080
 spring:
