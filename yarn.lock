@@ -218,12 +218,12 @@
   dependencies:
     bytemd "1.20.2"
 
-"@docsearch/css@3.3.3", "@docsearch/css@^3.3.1":
+"@docsearch/css@3.3.3", "@docsearch/css@^3.3.3":
   version "3.3.3"
   resolved "https://registry.npmmirror.com/@docsearch/css/-/css-3.3.3.tgz#f9346c9e24602218341f51b8ba91eb9109add434"
   integrity sha512-6SCwI7P8ao+se1TUsdZ7B4XzL+gqeQZnBc+2EONZlcVa0dVrk0NjETxozFKgMv0eEGH8QzP1fkN+A1rH61l4eg==
 
-"@docsearch/js@^3.3.1":
+"@docsearch/js@^3.3.3":
   version "3.3.3"
   resolved "https://registry.npmmirror.com/@docsearch/js/-/js-3.3.3.tgz#70725a7a8fe92d221fcf0593263b936389d3728f"
   integrity sha512-2xAv2GFuHzzmG0SSZgf8wHX0qZX8n9Y1ZirKUk5Wrdc+vH9CL837x2hZIUdwcPZI9caBA+/CzxsS68O4waYjUQ==
@@ -490,7 +490,7 @@
     "@vue/compiler-dom" "3.2.47"
     "@vue/shared" "3.2.47"
 
-"@vue/devtools-api@^6.4.5":
+"@vue/devtools-api@^6.5.0":
   version "6.5.0"
   resolved "https://registry.npmmirror.com/@vue/devtools-api/-/devtools-api-6.5.0.tgz#98b99425edee70b4c992692628fa1ea2c1e57d07"
   integrity sha512-o9KfBeaBmCKl10usN4crU53fYtC1r7jJwdGKjPT24t348rHxgfpZ0xL3Xm/gLUYnc0oTp8LAmrxOeLyu6tbk2Q==
@@ -543,7 +543,7 @@
   resolved "https://registry.npmmirror.com/@vue/shared/-/shared-3.2.47.tgz#e597ef75086c6e896ff5478a6bfc0a7aa4bbd14c"
   integrity sha512-BHGyyGN3Q97EZx0taMQ+OLNuZcW3d37ZEVmEAyeoA9ERdGvm9Irc/0Fua8SNyOtV1w6BS4q25wbMzJujO9HIfQ==
 
-"@vueuse/core@^9.9.0":
+"@vueuse/core@^9.13.0":
   version "9.13.0"
   resolved "https://registry.npmmirror.com/@vueuse/core/-/core-9.13.0.tgz#2f69e66d1905c1e4eebc249a01759cf88ea00cf4"
   integrity sha512-pujnclbeHWxxPRqXWmdkKV5OX4Wk4YeK7wusHqRwU0Q7EFusHoqNA/aPhB6KCh9hEqJkLAJo7bb0Lh9b+OIVzw==
@@ -584,6 +584,11 @@ algoliasearch@^4.0.0:
     "@algolia/requester-common" "4.15.0"
     "@algolia/requester-node-http" "4.15.0"
     "@algolia/transporter" "4.15.0"
+
+ansi-sequence-parser@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.npmmirror.com/ansi-sequence-parser/-/ansi-sequence-parser-1.1.0.tgz#4d790f31236ac20366b23b3916b789e1bde39aed"
+  integrity sha512-lEm8mt52to2fT8GhciPCGeCXACSz2UwIN4X2e2LJSnZ5uAbn2/dsYdOmUXq0AtWS5cpAupysIneExOgH0Vd2TQ==
 
 anymatch@~3.1.2:
   version "3.1.3"
@@ -2627,11 +2632,12 @@ select-files@^1.0.1:
   resolved "https://registry.npmmirror.com/select-files/-/select-files-1.0.1.tgz#974991a69c5dba26cfa57dcbc6d27f0917741acb"
   integrity sha512-8h4DSpjfFa0hyMP3z3ye4SxyhdaE5RgaXeScRpH7xl4YblnZSHwexmLdLNdSKwTO8H9ccDKj7Votz0io+18+BQ==
 
-shiki@^0.12.1:
-  version "0.12.1"
-  resolved "https://registry.npmmirror.com/shiki/-/shiki-0.12.1.tgz#26fce51da12d055f479a091a5307470786f300cd"
-  integrity sha512-aieaV1m349rZINEBkjxh2QbBvFFQOlgqYTNtCal82hHj4dDZ76oMlQIX+C7ryerBTDiga3e5NfH6smjdJ02BbQ==
+shiki@^0.14.1:
+  version "0.14.1"
+  resolved "https://registry.npmmirror.com/shiki/-/shiki-0.14.1.tgz#9fbe082d0a8aa2ad63df4fbf2ee11ec924aa7ee1"
+  integrity sha512-+Jz4nBkCBe0mEDqo1eKRcCdjRtrCjozmcbTUjbPTX7OOJfEbTZzlUWlZtGe3Gb5oV1/jnojhG//YZc3rs9zSEw==
   dependencies:
+    ansi-sequence-parser "^1.1.0"
     jsonc-parser "^3.2.0"
     vscode-oniguruma "^1.7.0"
     vscode-textmate "^8.0.0"
@@ -2876,7 +2882,7 @@ vfile@^5.0.0, vfile@^5.3.6:
     unist-util-stringify-position "^3.0.0"
     vfile-message "^3.0.0"
 
-vite@^4.0.4:
+vite@^4.1.4:
   version "4.2.0"
   resolved "https://registry.npmmirror.com/vite/-/vite-4.2.0.tgz#d4e6eafbc034f3faf0ab376bd5b76ac15775eb99"
   integrity sha512-AbDTyzzwuKoRtMIRLGNxhLRuv1FpRgdIw+1y6AQG73Q5+vtecmvzKo/yk8X/vrHDpETRTx01ABijqUHIzBXi0g==
@@ -2888,20 +2894,20 @@ vite@^4.0.4:
   optionalDependencies:
     fsevents "~2.3.2"
 
-vitepress@1.0.0-alpha.36:
-  version "1.0.0-alpha.36"
-  resolved "https://registry.npmmirror.com/vitepress/-/vitepress-1.0.0-alpha.36.tgz#aefc5ed5ee83161466a91fac38779776c2ffbae3"
-  integrity sha512-JH9NlBQpQrcIudF1HM8Sq3K6FbOiOTrD33PI0n+pmJQ7dOu4WAm3YnwevMInW8leNiEEWCAH+coIkOYcf3fhpQ==
+vitepress@^1.0.0-alpha.60:
+  version "1.0.0-alpha.60"
+  resolved "https://registry.npmmirror.com/vitepress/-/vitepress-1.0.0-alpha.60.tgz#6ce09e0b31ae5fc66f1309e0676c3988095c9be7"
+  integrity sha512-GI5iLDkZRqGEPixbSloT+p6pbKcMh9ykRRxt8vf9AjV1gaPit6Stg/t9WNxTdIhKVCuQMexGs1605DNApSRK2A==
   dependencies:
-    "@docsearch/css" "^3.3.1"
-    "@docsearch/js" "^3.3.1"
+    "@docsearch/css" "^3.3.3"
+    "@docsearch/js" "^3.3.3"
     "@vitejs/plugin-vue" "^4.0.0"
-    "@vue/devtools-api" "^6.4.5"
-    "@vueuse/core" "^9.9.0"
+    "@vue/devtools-api" "^6.5.0"
+    "@vueuse/core" "^9.13.0"
     body-scroll-lock "4.0.0-beta.0"
-    shiki "^0.12.1"
-    vite "^4.0.4"
-    vue "^3.2.45"
+    shiki "^0.14.1"
+    vite "^4.1.4"
+    vue "^3.2.47"
 
 vscode-oniguruma@^1.7.0:
   version "1.7.0"
@@ -2918,7 +2924,7 @@ vue-demi@*:
   resolved "https://registry.npmmirror.com/vue-demi/-/vue-demi-0.13.11.tgz#7d90369bdae8974d87b1973564ad390182410d99"
   integrity sha512-IR8HoEEGM65YY3ZJYAjMlKygDQn25D5ajNFNoKh9RSDMQtlzCxtfQjdQgv9jjK+m3377SsJXY8ysq8kLCZL25A==
 
-vue@^3.2.45:
+vue@^3.2.45, vue@^3.2.47:
   version "3.2.47"
   resolved "https://registry.npmmirror.com/vue/-/vue-3.2.47.tgz#3eb736cbc606fc87038dbba6a154707c8a34cff0"
   integrity sha512-60188y/9Dc9WVrAZeUVSDxRQOZ+z+y5nO2ts9jWXSTkMvayiWxCWOWtBQoYjLeccfXkiiPZWAHcV+WTPhkqJHQ==
