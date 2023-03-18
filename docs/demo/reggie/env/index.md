@@ -405,7 +405,7 @@ CREATE TABLE `user` (
 
 直接导入 sql 脚本
 
-```mysql
+```
 source D://mysql/db_reggie.sql
 ```
 
