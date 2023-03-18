@@ -96,7 +96,7 @@ export default {
       appId: "NTK6UE6C60",
       apiKey: "f76c9116ffd2549bdc3f0e5cb7a940c3",
       indexName: "java-blog",
-      placeholder: "Ctrl + K",
+      placeholder: "请输入关键词",
       buttonText: "Search",
     },
   },
