@@ -52,7 +52,7 @@ System.out.println(t.price); // 98.00
 - 继承
 - 多态
 
-**封装**
+### 封装
 
 如何正确设计对象的属性和方法。对象代表什么，就得封装对应的数据，并提供数据对应的行为。
 
@@ -100,21 +100,15 @@ POJO 的内在含义是指那些:
 有一些 `private` 的参数作为对象的属性，然后针对每一个参数定义 `get` 和 `set` 方法访问的接口。
 没有从任何类继承、也没有实现任何接口，更没有被其它框架侵入的 java 对象。
 
-
-
 ### 示例：
 
 > **需求**
 > 使用面向对象编程，模仿电影信息的展示。
 >
-> 
->
 > **分析**
 > 一部电影是一个 Java 对象，需要先设计电影类，再创建电影对象。
 > 三部电影对象可以采用数组存储起来。
 > 依次遍历数组中的每个电影对象，取出其信息进行展示。
-
-
 
 ```java
 public class Movie {
@@ -174,3 +168,160 @@ public class Main {
     }
 }
 ```
+
+### 继承
+
+提供一个关键字 `extends`，用这个关键字，我们可以让一个类和另一个类建立起父子关系
+
+```java
+public class Student extends People {}
+```
+
+继承的优点：**当子类继承父类后，就可以直接使用父类公共的属性和方法了，可以提高代码的复用性**
+
+继承的特点：
+
+- 子类可以继承父类的属性和行为，但是**子类不能继承父类的构造器**。
+- Java 是**单继承模式**：一个类只能继承一个直接父类。
+- Java 不支持多继承、但是支持多层继承。
+- Java 中所有的类都是 Object 类的子类。
+
+在子类方法中访问成员（成员变量、成员方法）满足：**就近原则**
+
+- 先子类局部范围找
+- 然后子类成员范围找
+- 然后父类成员范围找，如果父类范围还没有找到则报错。
+
+如果子父类中，出现了重名的成员，会优先使用子类的，此时如果一定要在子类中使用父类的怎么办？
+可以通过 `super` 关键字，指定访问父类的成员。
+
+**子类是否可以继承父类的私有成员**？
+可以，只是不能直接访问
+
+
+
+## 多态
+
+多态是同一个行为具有多个不同表现形式或形态的能力。
+
+多态就是同一个接口，使用不同的实例而执行不同操作，如图所示：两张图说明多态
+
+![](./assets/5.png)
+
+![](./assets/6.jpg)
+
+
+
+
+
+**重写（@Override）**
+
+- 重写方法的名称、形参列表必须与被重写方法的名称和参数列表一致
+- 私有方法不能被重写
+- 子类重写父类方法时，访问权限必须大于或者等于父类 
+- 子类不能重写父类的静态方法，如果重写会报错的
+
+
+
+```java
+public class Animal {
+    public String name;
+    public int age;
+
+    public Animal() {
+    }
+
+    public Animal(String name, int age) {
+        this.name = name;
+        this.age = age;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+}
+```
+
+```java
+public class Dog extends Animal {
+    public Dog(String name, int age) {
+        super(name, age);
+    }
+
+    @Override
+    public String getName(){
+        System.out.println("Dog getName...");
+        return super.getName();
+    }
+}
+```
+
+
+
+**子类继承父类后构造器的特点**
+
+子类中所有的构造器默认都会先访问父类中无参的构造器，再执行自己
+
+
+
+**为什么？**
+子类在初始化的时候，有可能会使用到父类中的数据，如果父类没有完成初始化，子类将无法使用父类的数据。
+子类初始化之前，一定要调用父类构造器先完成父类数据空间的初始化。
+
+
+
+**怎么调用父类构造器的？**
+子类构造器的第一行语句默认都是：`super()` 不写也存在。
+
+
+
+**super调用父类有参数构造器的作用：**
+ 初始化继承自父类的数据。
+
+如果父类中没有无参数构造器，只有有参构造器，会出现什么现象呢？
+会报错。因为子类默认是调用父类无参构造器的。
+
+**如何解决？**
+子类构造器中可以通过书写 super(…)，手动调用父类的有参数构造器
+
+意思是：父类可以不写无参数构造器，子类构造器通过 super 关键字调用父类有参数构造器
+
+
+
+```java
+public class Student {
+    private String schoolName;
+    private String name;
+   
+    public Student(String name){
+          this(name , “黑马培训中心”);	
+    }	
+     
+    public Student(String name , String schoolName ){
+          this.name = name;
+          this.schoolName = schoolName;
+    }
+}
+
+```
+
+**this(...)和super(…)使用注意点：**
+
+- 子类通过 this (...）去调用本类的其他构造器，本类其他构造器会通过 super 去手动调用父类的构造器，最终还是会调用父类构造器的。
+- 注意：this(…) super(…) 都只能放在构造器的第一行，所以二者不能共存在同一个构造器中
+
+
+
+### 
