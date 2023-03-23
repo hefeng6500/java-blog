@@ -198,9 +198,7 @@ public class Student extends People {}
 **子类是否可以继承父类的私有成员**？
 可以，只是不能直接访问
 
-
-
-## 多态
+### 多态
 
 多态是同一个行为具有多个不同表现形式或形态的能力。
 
@@ -210,18 +208,12 @@ public class Student extends People {}
 
 ![](./assets/6.jpg)
 
-
-
-
-
 **重写（@Override）**
 
 - 重写方法的名称、形参列表必须与被重写方法的名称和参数列表一致
 - 私有方法不能被重写
-- 子类重写父类方法时，访问权限必须大于或者等于父类 
+- 子类重写父类方法时，访问权限必须大于或者等于父类
 - 子类不能重写父类的静态方法，如果重写会报错的
-
-
 
 ```java
 public class Animal {
@@ -268,27 +260,19 @@ public class Dog extends Animal {
 }
 ```
 
-
-
 **子类继承父类后构造器的特点**
 
 子类中所有的构造器默认都会先访问父类中无参的构造器，再执行自己
-
-
 
 **为什么？**
 子类在初始化的时候，有可能会使用到父类中的数据，如果父类没有完成初始化，子类将无法使用父类的数据。
 子类初始化之前，一定要调用父类构造器先完成父类数据空间的初始化。
 
-
-
 **怎么调用父类构造器的？**
 子类构造器的第一行语句默认都是：`super()` 不写也存在。
 
-
-
-**super调用父类有参数构造器的作用：**
- 初始化继承自父类的数据。
+**super 调用父类有参数构造器的作用：**
+初始化继承自父类的数据。
 
 如果父类中没有无参数构造器，只有有参构造器，会出现什么现象呢？
 会报错。因为子类默认是调用父类无参构造器的。
@@ -298,17 +282,15 @@ public class Dog extends Animal {
 
 意思是：父类可以不写无参数构造器，子类构造器通过 super 关键字调用父类有参数构造器
 
-
-
 ```java
 public class Student {
     private String schoolName;
     private String name;
-   
+
     public Student(String name){
-          this(name , “黑马培训中心”);	
-    }	
-     
+          this(name , “黑马培训中心”);
+    }
+
     public Student(String name , String schoolName ){
           this.name = name;
           this.schoolName = schoolName;
@@ -317,11 +299,295 @@ public class Student {
 
 ```
 
-**this(...)和super(…)使用注意点：**
+**this(...)和 super(…)使用注意点：**
 
 - 子类通过 this (...）去调用本类的其他构造器，本类其他构造器会通过 super 去手动调用父类的构造器，最终还是会调用父类构造器的。
 - 注意：this(…) super(…) 都只能放在构造器的第一行，所以二者不能共存在同一个构造器中
 
 
 
-### 
+## 包
+
+包是用来分门别类的管理各种不同类的，类似于文件夹、建包利于程序的管理和维护。
+
+书写格式：package 公司域名倒写.技术名称。报名建议全部英文小写，且具备意义
+
+```java
+package com.itheima.javabean;
+```
+
+相同包下的类可以直接访问，不同包下的类必须导包,才可以使用！导包格式：import 包名.类名;
+
+假如一个类中需要用到不同类，而这个两个类的名称是一样的，那么**默认只能导入一个类，另一个类要带包名访问**,如下：
+
+```java
+com.example.MyClass myObject = new com.example.MyClass();
+```
+
+
+
+## 权限修饰符
+
+private -> 缺省 -> protected -> public 
+
+
+
+| **修饰符** | **同一个类中** | 同一个包中其他类 | 不同包下的子类 |
+| ---------- | -------------- | ---------------- | -------------- |
+| private    | √              |                  |                |
+| 缺省       | √              | √                |                |
+| protected  | √              | √                | √              |
+| public     | √              | √                | √              |
+
+
+
+## final
+
+**final的作用**
+
+- final 关键字是最终的意思，可以修饰（类、方法、变量）
+- 修饰类：表明该类是最终类，不能被继承。
+- 修饰方法：表明该方法是最终方法，不能被重写。
+- 修饰变量：表示该变量第一次赋值后，不能再次被赋值(有且仅能被赋值一次)。
+
+
+
+**final修饰变量的注意**
+
+- final修饰的变量是基本类型：那么变量存储的数据值不能发生改变。
+- final修饰的变量是引用类型：那么变量存储的地址值不能发生改变，但是地址指向的对象内容是可以发生变化的。
+
+
+
+## 常量
+
+使用了 **public static final** 修饰的成员变量
+
+常量名的命名规范：英文单词全部大写，多个单词下划线连接起来
+
+```java
+public class Constant {
+    public static final String SCHOOL_NAME  = “传智教育";
+    public static final String LOGIN_NAME  = “admin";
+    public static final String PASS_WORD  = “123456";
+} 
+
+```
+
+
+
+## 枚举
+
+为了做信息的标志和信息的分类
+
+```java
+ 修饰符 enum 枚举名称{
+    第一行都是罗列枚举类实例的名称。
+}
+```
+
+```java
+enum Season{
+    SPRING , SUMMER , AUTUMN , WINTER;
+}
+
+```
+
+```java
+C// Compiled from "Season.java"
+    
+public final class Season extends java.lang.Enum<Season> {
+    public static final Season SPRING = new Season();
+    public static final Season SUMMER = new Season();
+    public static final Season AUTUMN = new Season();
+    public static final Season WINTER = new Season();
+    public static Season[] values();
+    public static Season valueOf(java.lang.String);
+}
+
+```
+
+**枚举的特征：**
+
+- 枚举类都是继承了枚举类型：`java.lang.Enum`
+- 枚举都是最终类，不可以被继承。
+- 构造器都是私有的，枚举对外不能创建对象。
+- 枚举类的第一行默认都是罗列枚举对象的名称的。
+- 枚举类相当于是多例模式。
+
+
+
+## 抽象类
+
+- 在Java中abstract是抽象的意思，可以修饰类、成员方法。
+- abstract修饰类，这个类就是抽象类；修饰方法，这个方法就是抽象方法。
+
+```java
+修饰符 abstract class 类名{ 
+	修饰符 abstract 返回值类型 方法名称(形参列表)；
+}
+```
+
+```java
+public abstract class Animal{
+    public abstract void run();
+}
+
+```
+
+
+
+- 抽象方法只有方法签名，不能声明方法体。
+- 一个类中如果定义了抽象方法，这个类必须声明成抽象类，否则报错。
+- 类有的成员（成员变量、方法、构造器）抽象类都具备
+- 抽象类中不一定有抽象方法，有抽象方法的类一定是抽象类
+- 一个类继承了抽象类必须重写完抽象类的全部抽象方法，否则这个类也必须定义成抽象类。
+- 不能用abstract修饰变量、代码块、构造器。
+- 最重要的特征：得到了抽象方法，失去了创建对象的能力（有得有失）
+
+
+
+**final和abstract是什么关系？**
+
+- 互斥关系
+- abstract定义的抽象类作为模板让子类继承，final定义的类不能被继承。
+- 抽象方法定义通用功能让子类重写，final定义的方法子类不能重写。
+
+
+
+```java
+// 定义一个抽象类Animal
+public abstract class Animal {
+    // 抽象方法，子类必须实现
+    public abstract void makeSound();
+
+    // 非抽象方法，子类可以选择是否覆盖
+    public void sleep() {
+        System.out.println("睡觉中...");
+    }
+}
+
+// 定义一个继承自Animal的子类Dog
+public class Dog extends Animal {
+    // 实现抽象方法
+    public void makeSound() {
+        System.out.println("汪汪汪");
+    }
+}
+
+// 定义另一个继承自Animal的子类Cat
+public class Cat extends Animal {
+    // 实现抽象方法
+    public void makeSound() {
+        System.out.println("喵喵喵");
+    }
+
+    // 覆盖父类的非抽象方法
+    public void sleep() {
+        System.out.println("蜷缩睡觉中...");
+    }
+}
+
+// 在主函数中使用抽象类
+public class Main {
+    public static void main(String[] args) {
+        // 无法实例化抽象类
+        // Animal animal = new Animal();
+
+        // 可以通过子类实例化
+        Animal dog = new Dog();
+        Animal cat = new Cat();
+
+        // 调用抽象方法
+        dog.makeSound(); // 输出 "汪汪汪"
+        cat.makeSound(); // 输出 "喵喵喵"
+
+        // 调用非抽象方法
+        dog.sleep(); // 输出 "睡觉中..."
+        cat.sleep(); // 输出 "蜷缩睡觉中..."
+    }
+}
+
+```
+
+
+
+## 接口 interface
+
+```java
+public interface 接口名 {
+       // 常量
+       // 抽象方法
+} 
+
+```
+
+- 接口不能实例化
+- 接口中的成员都是public修饰的，写不写都是，因为规范的目的是为了公开化
+
+
+
+**实现接口**
+
+使用 implements 实现接口，实现接口的类称为**实现类**
+
+```java
+修饰符 class 实现类 implements 接口1, 接口2, 接口3 , ... {
+}
+
+```
+
+**接口可以被类单实现，也可以被类多实现**
+
+
+
+**一个类实现接口，必须重写完全部接口的全部抽象方法，否则这个类需要定义成抽象类**
+
+
+
+**接口和类的继承注意事项：**
+
+- 类和类的关系：单继承。
+- 类和接口的关系：多实现。
+- 接口和接口的关系：多继承，一个接口可以同时继承多个接口。
+
+
+
+```java
+interface A {
+    void methodA();
+}
+
+interface B {
+    void methodB();
+}
+
+interface C extends A, B {
+    void methodC();
+}
+
+class D implements C {
+    public void methodA() {
+        System.out.println("Method A");
+    }
+
+    public void methodB() {
+        System.out.println("Method B");
+    }
+
+    public void methodC() {
+        System.out.println("Method C");
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        D obj = new D();
+        obj.methodA();
+        obj.methodB();
+        obj.methodC();
+    }
+}
+
+```
+
