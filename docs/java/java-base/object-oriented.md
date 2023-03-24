@@ -591,3 +591,101 @@ public class Main {
 
 ```
 
+
+
+## 内部类
+
+内部类就是定义在一个类里面的类，里面的类可以理解成（寄生），外部类可以理解成（宿主）。
+
+1. 静态内部类
+
+   ```java
+   public class Outer{
+   	// 静态成员内部类
+   	public static class Inner{}
+   }
+   
+   Outer.Inner in =  new Outer.Inner();
+   
+   ```
+
+   - 静态内部类中**可以**直接访问外部类的静态成员
+   - 静态内部类**不可以**直接访问外部类的实例成员
+
+   
+
+2. 成员内部类
+
+   ```java
+   public class Outer {
+       // 成员内部类
+       public class Inner {}
+   }
+   
+   Outer.Inner in =  new Outer().new  Inner();
+   ```
+
+   - **可以**直接访问外部类的静态成员
+   - **可以**直接访问外部类的实例成员
+
+3. 局部内部类
+
+   ```java
+   public class OuterClass {
+     void someMethod() {
+       // 定义一个局部内部类
+       class LocalInnerClass {
+         // 局部内部类的内容
+       }
+   
+       // 使用局部内部类
+       LocalInnerClass inner = new LocalInnerClass();
+       inner.someMethod();
+     }
+   }
+   
+   ```
+
+   
+
+4. 匿名内部类
+
+   ```java
+   Animal a = new Employee() {
+       public void run() {}
+   };
+   
+   a. run();
+   ```
+
+   - 匿名内部类是一个没有名字的内部类，同时也代表一个对象。
+   - 匿名内部类的对象类型，相当于是当前new的那个类型的子类类型
+
+
+
+**面试题：**
+
+```java
+public class People {
+    private int heartbeat = 150;
+    public class Heart {
+        private int heartbeat = 110;
+
+        public void show() {
+            int heartbeat = 78;
+            System.out.println(heartbeat); // 78
+            System.out.println(this.heartbeat); // 110
+            System.out.println(People.this.heartbeat); // 150
+        }
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        People people = new People();
+
+        people.new Heart().show();
+    }
+}
+```
+
