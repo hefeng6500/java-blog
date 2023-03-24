@@ -651,13 +651,30 @@ public class Main {
 4. 匿名内部类
 
    ```java
-   Animal a = new Employee() {
-       public void run() {}
-   };
+   new SuperType(construction parameters)
+   {
+       // inner class body;
+   }
    
-   a. run();
    ```
 
+   其中SuperType可以是一个类或者一个接口，construction parameters是构造方法中的参数列表。
+   
+   ```java
+   Thread thread = new Thread(new Runnable() {
+       @Override
+       public void run() {
+           System.out.println("Hello from a thread!");
+       }
+   });
+   thread.start();
+   
+   ```
+   
+   在这个例子中，我们创建了一个Thread对象，并将一个Runnable实例作为构造方法的参数传入。这个Runnable实例就是一个匿名内部类，它实现了Runnable接口并重写了run()方法。
+   
+   
+   
    - 匿名内部类是一个没有名字的内部类，同时也代表一个对象。
    - 匿名内部类的对象类型，相当于是当前new的那个类型的子类类型
 
@@ -744,3 +761,56 @@ Integer myInt = Integer.valueOf(42);
 
 ```
 
+
+
+## Lambda表达式
+
+- Lambda表达式是JDK 8开始后的一种新语法形式
+- **简化匿名内部类的代码写法**
+- Lambda表达式只能简化函数式接口的匿名内部类的写法形式（**什么是函数式接口？**首先必须是接口、其次接口中有且仅有一个抽象方法的形式）
+
+```java
+(匿名内部类被重写方法的形参列表) -> {
+    被重写方法的方法体代码。
+}
+
+注：-> 是语法形式，无实际含义
+
+```
+
+
+
+```java
+List<String> names = Arrays.asList("peter", "anna", "mike", "xenia");
+
+Collections.sort(names, new Comparator<String>() {
+    @Override
+    public int compare(String a, String b) {
+        return b.compareTo(a);
+    }
+});
+```
+
+
+
+简化一下代码：
+
+```java
+Collections.sort(names, (String a, String b) -> {
+    return b.compareTo(a);
+});
+```
+
+可以继续简化
+
+```java
+Collections.sort(names, (String a, String b) -> b.compareTo(a));
+```
+
+极简
+
+```java
+names.sort((a, b) -> b.compareTo(a));
+```
+
+`List` 集合现在已经添加了 `sort` 方法。而且 Java 编译器能够根据**类型推断机制**判断出参数类型，这样，你连入参的类型都可以省略啦，怎么样，是不是感觉很强大呢！

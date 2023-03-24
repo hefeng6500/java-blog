@@ -85,35 +85,28 @@ public class String01 {
 
 **特例：**
 
-
 ```java
   String s1 = "abc";
   String s2 = "a" + "b" + "c";
   System.out.println(s1 == s2); // true
 ```
 
-
-
 **API**
 
-| 方法名                                                       | 说明                                                     |
-| ------------------------------------------------------------ | -------------------------------------------------------- |
-| public int length()                                          | 返回此字符串的长度                                       |
-| public char charAt(int index)                                | 获取某个索引位置处的字符                                 |
-| public char[] toCharArray()：                                | 将当前字符串转换成字符数组返回                           |
-| public String substring(int beginIndex, int endIndex)        | 根据开始和结束索引进行截取，得到新的字符串（包前不包后） |
-| public String substring(int beginIndex)                      | 从传入的索引处截取，截取到末尾，得到新的字符串           |
+| 方法名                                                               | 说明                                                     |
+| -------------------------------------------------------------------- | -------------------------------------------------------- |
+| public int length()                                                  | 返回此字符串的长度                                       |
+| public char charAt(int index)                                        | 获取某个索引位置处的字符                                 |
+| public char[] toCharArray()：                                        | 将当前字符串转换成字符数组返回                           |
+| public String substring(int beginIndex, int endIndex)                | 根据开始和结束索引进行截取，得到新的字符串（包前不包后） |
+| public String substring(int beginIndex)                              | 从传入的索引处截取，截取到末尾，得到新的字符串           |
 | public String replace(CharSequence target, CharSequence replacement) | 使用新值，将字符串中的旧值替换，得到新的字符串           |
-| public String[] split(String regex)                          | 根据传入的规则切割字符串，得到字符串数组返回             |
-
-
+| public String[] split(String regex)                                  | 根据传入的规则切割字符串，得到字符串数组返回             |
 
 ## ArrayList
 
 **数组**： 类型确定，长度固定
 **集合**：集合的大小不固定，启动后可以动态变化，类型也可以选择不固定
-
-
 
 ```java
 import java.util.ArrayList;
@@ -133,8 +126,6 @@ public class ArrayList01 {
     }
 }
 ```
-
-
 
 | 方法名                               | 说明                               |
 | ------------------------------------ | ---------------------------------- |
@@ -167,8 +158,6 @@ public class ArrayList02 {
 
 泛型只能支持引用数据类型，不支持基本数据类型
 
-
-
 ArrayList 常用方法
 
 | 方法名称                          | 说明                                   |
@@ -178,8 +167,6 @@ ArrayList 常用方法
 | public E remove(int index)        | 删除指定索引处的元素，返回被删除的元素 |
 | public boolean remove(Object o)   | 删除指定的元素，返回删除是否成功       |
 | public E set(int index,E element) | 修改指定索引处的元素，返回被修改的元素 |
-
-
 
 ## StringBuilder
 
@@ -195,10 +182,6 @@ stringBuilder.append(true);
 
 System.out.println(stringBuilder.reverse().toString());
 ```
-
-
-
-
 
 ## 日期相关
 
@@ -229,13 +212,11 @@ public class Test01 {
 }
 ```
 
-
-
 ### Calendar
 
-Calendar代表了系统此刻日期对应的日历对象
+Calendar 代表了系统此刻日期对应的日历对象
 
-Calendar是一个**抽象类，不能直接创建对象**
+Calendar 是一个**抽象类，不能直接创建对象**
 
 ```java
 public class Test02 {
@@ -267,18 +248,16 @@ public class Test02 {
 
 - DateTimeFormatter 用于做时间的格式化和解析的
 
-- Duration:用于计算两个“时间”间隔 
+- Duration:用于计算两个“时间”间隔
 
 - Period:用于计算两个“日期”间隔
-
-  
 
 ```java
 public class Test03 {
     public static void main(String[] args) {
         LocalDate localDate = LocalDate.now();
         LocalTime localTime = LocalTime.now();
-        
+
         System.out.println(localDate); // 2023-03-24
         System.out.println(localTime); // 16:27:38.922627100
 
@@ -301,7 +280,7 @@ public class Test03 {
 }
 ```
 
-### Instant时间戳
+### Instant 时间戳
 
 ```java
 public class Test04 {
@@ -374,8 +353,6 @@ public class Test07 {
 }
 ```
 
-
-
 ### ChronoUnit
 
 ChronoUnit 类可用于在单个时间单位内测量一段时间，这个**工具类是最全的**了，可以**用于比较所有的时间单位**
@@ -407,4 +384,3 @@ public class Test08 {
     }
 }
 ```
-
