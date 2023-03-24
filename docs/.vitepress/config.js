@@ -12,6 +12,7 @@ export default {
           { text: "面向对象", link: "/java/java-base/object-oriented" },
           { text: "常用 API", link: "/java/java-base/java-api" },
           { text: "学习案例", link: "/java/java-base/case" },
+          { text: "IDEA", link: "/java/java-base/idea" },
         ],
       },
       {
@@ -101,4 +102,4 @@ export default {
       buttonText: "Search",
     },
   },
-};
+}
