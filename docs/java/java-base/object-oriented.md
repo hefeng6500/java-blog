@@ -689,3 +689,58 @@ public class Main {
 }
 ```
 
+
+
+## 包装类
+
+Java为了实现一切皆对象，为8种基本类型提供了对应的引用类型
+
+集合和泛型其实也只能支持包装类型，不支持基本数据类型
+
+
+
+特点：
+
+- 自动装箱：基本类型的数据和变量可以直接赋值给包装类型的变量。
+
+- 自动拆箱：包装类型的变量可以直接赋值给基本数据类型的变量。
+
+- 包装类的变量的默认值可以是null，容错率更高
+
+- 可以把基本类型的数据转换成字符串类型(用处不大)
+
+  ```java
+  调用toString()方法得到字符串结果。
+  调用Integer.toString(基本类型的数据)。
+  ```
+
+  
+
+- 可以把字符串类型的数值转换成真实的数据类型（真的很有用）
+
+  ```java
+  Integer.parseInt(“字符串类型的整数”)
+  Double.parseDouble(“字符串类型的小数”)。
+  ```
+
+  
+
+| 基本数据类型 | 引用数据类型 |
+| ------------ | ------------ |
+| byte         | Byte         |
+| short        | Short        |
+| int          | Integer      |
+| long         | Long         |
+| char         | Character    |
+| float        | Float        |
+| double       | Double       |
+| boolean      | Boolean      |
+
+```java
+Integer myInt = new Integer(42);
+
+// 注意，自 Java 9 开始，Java 已经废弃了许多过时的包装类构造函数。相反，Java 推荐使用静态工厂方法 valueOf() 来创建包装类实例
+Integer myInt = Integer.valueOf(42);
+
+```
+
