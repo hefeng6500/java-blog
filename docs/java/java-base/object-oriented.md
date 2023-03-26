@@ -304,8 +304,6 @@ public class Student {
 - 子类通过 this (...）去调用本类的其他构造器，本类其他构造器会通过 super 去手动调用父类的构造器，最终还是会调用父类构造器的。
 - 注意：this(…) super(…) 都只能放在构造器的第一行，所以二者不能共存在同一个构造器中
 
-
-
 ## 包
 
 包是用来分门别类的管理各种不同类的，类似于文件夹、建包利于程序的管理和维护。
@@ -324,13 +322,115 @@ package com.itheima.javabean;
 com.example.MyClass myObject = new com.example.MyClass();
 ```
 
+## static 关键字
 
+修饰作用，可以被共享访问，修改
+
+- 修饰静态成员
+
+  ```java
+  public class User {
+      static String name;
+      int age;
+  }
+
+  ```
+
+- 修饰静态方法
+
+  ```java
+  public class Student {
+      private String name;
+      // 1. 实例方法: 无static修饰的，属于对象的
+      public void study(){
+      	System.out.println(name +  “在好好学习~~~”);
+      }
+      // 2. 静态方法：有static修饰，属于类和对象共享的
+      public static int getMax(int a , int b){
+          return a > b ? a : b;
+      }
+      public static void main(String[] args) {
+          // 1. 类名.静态成员方法
+          System.out.println(Student.getMax(10 , 2));
+          // 注意：同一个类中访问静态成员类名可以不写
+          System.out.println(getMax(2 , 10));
+          // 2. 对象.实例成员方法
+          // study(); // 会报错
+          Student s = new  Student();
+          s.name = "猪八戒";
+          s.study();
+          // 3. 对象.静态成员方法。（不推荐）
+          System.out.println(s.getMax(20 , 10));
+      }
+  }
+
+  ```
+
+注意：
+
+- 静态方法只能访问静态的成员，不可以直接访问实例成员。
+- 实例方法可以访问静态的成员，也可以访问实例成员。
+- 静态方法中是不可以出现 `this` 关键字的。
+- 类名.静态成员变量(推荐)
+- 对象.静态成员变量(不推荐)。
+
+### static 应用
+
+- 工具类
+
+  特点：内部都是一些静态方法，每个方法完成一个功能；一次编写，处处可用，提高代码的重用性
+
+- 代码块
+
+  **静态代码块:**
+  格式：static{}
+  特点：需要通过 static 关键字修饰，随着类的加载而加载，并且自动触发、只执行一次
+  使用场景：在类加载的时候做一些静态数据初始化 的操作，以便后续使用。
+
+  **构造代码块**（了解，见的少）：
+  格式：{}
+  特点：每次创建对象，调用构造器执行时，都会执行该代码块中的代码，并且在构造器执行前执行
+  使用场景：初始化实例资源。
+
+- 单例
+
+​ 饿汉单例：定义一个类，把构造器私有，定义一个静态变量存储一个对象
+
+```java
+/** a、定义一个单例类 */
+public class SingleInstance {
+    /** c.定义一个静态变量存储一个对象即可 :属于类，与类一起加载一次 */
+    public static SingleInstance instance = new SingleInstance ();
+
+    /** b.单例必须私有构造器*/
+    private SingleInstance (){
+    	System.out.println("创建了一个对象");
+    }
+}
+
+```
+
+​ 懒汉单例：定义一个类，把构造器私有，定义一个静态变量存储一个对象，提供一个返回单例对象的方法
+
+```java
+/** 定义一个单例类 */
+class SingleInstance{
+    /** 定义一个静态变量存储一个对象即可 :属于类，与类一起加载一次 */
+    public static SingleInstance instance ; // null
+    /** 单例必须私有构造器*/
+    private SingleInstance(){}
+    /** 必须提供一个方法返回一个单例对象  */
+    public static SingleInstance getInstance(){
+        ...
+
+        return ...;
+    }
+}
+```
 
 ## 权限修饰符
 
-private -> 缺省 -> protected -> public 
-
-
+private -> 缺省 -> protected -> public
 
 | **修饰符** | **同一个类中** | 同一个包中其他类 | 不同包下的子类 |
 | ---------- | -------------- | ---------------- | -------------- |
@@ -339,25 +439,19 @@ private -> 缺省 -> protected -> public
 | protected  | √              | √                | √              |
 | public     | √              | √                | √              |
 
-
-
 ## final
 
-**final的作用**
+**final 的作用**
 
 - final 关键字是最终的意思，可以修饰（类、方法、变量）
 - 修饰类：表明该类是最终类，不能被继承。
 - 修饰方法：表明该方法是最终方法，不能被重写。
 - 修饰变量：表示该变量第一次赋值后，不能再次被赋值(有且仅能被赋值一次)。
 
+**final 修饰变量的注意**
 
-
-**final修饰变量的注意**
-
-- final修饰的变量是基本类型：那么变量存储的数据值不能发生改变。
-- final修饰的变量是引用类型：那么变量存储的地址值不能发生改变，但是地址指向的对象内容是可以发生变化的。
-
-
+- final 修饰的变量是基本类型：那么变量存储的数据值不能发生改变。
+- final 修饰的变量是引用类型：那么变量存储的地址值不能发生改变，但是地址指向的对象内容是可以发生变化的。
 
 ## 常量
 
@@ -370,11 +464,9 @@ public class Constant {
     public static final String SCHOOL_NAME  = “传智教育";
     public static final String LOGIN_NAME  = “admin";
     public static final String PASS_WORD  = “123456";
-} 
+}
 
 ```
-
-
 
 ## 枚举
 
@@ -395,7 +487,7 @@ enum Season{
 
 ```java
 C// Compiled from "Season.java"
-    
+
 public final class Season extends java.lang.Enum<Season> {
     public static final Season SPRING = new Season();
     public static final Season SUMMER = new Season();
@@ -415,15 +507,13 @@ public final class Season extends java.lang.Enum<Season> {
 - 枚举类的第一行默认都是罗列枚举对象的名称的。
 - 枚举类相当于是多例模式。
 
-
-
 ## 抽象类
 
-- 在Java中abstract是抽象的意思，可以修饰类、成员方法。
-- abstract修饰类，这个类就是抽象类；修饰方法，这个方法就是抽象方法。
+- 在 Java 中 abstract 是抽象的意思，可以修饰类、成员方法。
+- abstract 修饰类，这个类就是抽象类；修饰方法，这个方法就是抽象方法。
 
 ```java
-修饰符 abstract class 类名{ 
+修饰符 abstract class 类名{
 	修饰符 abstract 返回值类型 方法名称(形参列表)；
 }
 ```
@@ -435,25 +525,19 @@ public abstract class Animal{
 
 ```
 
-
-
 - 抽象方法只有方法签名，不能声明方法体。
 - 一个类中如果定义了抽象方法，这个类必须声明成抽象类，否则报错。
 - 类有的成员（成员变量、方法、构造器）抽象类都具备
 - 抽象类中不一定有抽象方法，有抽象方法的类一定是抽象类
 - 一个类继承了抽象类必须重写完抽象类的全部抽象方法，否则这个类也必须定义成抽象类。
-- 不能用abstract修饰变量、代码块、构造器。
+- 不能用 abstract 修饰变量、代码块、构造器。
 - 最重要的特征：得到了抽象方法，失去了创建对象的能力（有得有失）
 
-
-
-**final和abstract是什么关系？**
+**final 和 abstract 是什么关系？**
 
 - 互斥关系
-- abstract定义的抽象类作为模板让子类继承，final定义的类不能被继承。
-- 抽象方法定义通用功能让子类重写，final定义的方法子类不能重写。
-
-
+- abstract 定义的抽象类作为模板让子类继承，final 定义的类不能被继承。
+- 抽象方法定义通用功能让子类重写，final 定义的方法子类不能重写。
 
 ```java
 // 定义一个抽象类Animal
@@ -510,22 +594,18 @@ public class Main {
 
 ```
 
-
-
 ## 接口 interface
 
 ```java
 public interface 接口名 {
        // 常量
        // 抽象方法
-} 
+}
 
 ```
 
 - 接口不能实例化
-- 接口中的成员都是public修饰的，写不写都是，因为规范的目的是为了公开化
-
-
+- 接口中的成员都是 public 修饰的，写不写都是，因为规范的目的是为了公开化
 
 **实现接口**
 
@@ -539,19 +619,13 @@ public interface 接口名 {
 
 **接口可以被类单实现，也可以被类多实现**
 
-
-
 **一个类实现接口，必须重写完全部接口的全部抽象方法，否则这个类需要定义成抽象类**
-
-
 
 **接口和类的继承注意事项：**
 
 - 类和类的关系：单继承。
 - 类和接口的关系：多实现。
 - 接口和接口的关系：多继承，一个接口可以同时继承多个接口。
-
-
 
 ```java
 interface A {
@@ -591,8 +665,6 @@ public class Main {
 
 ```
 
-
-
 ## 内部类
 
 内部类就是定义在一个类里面的类，里面的类可以理解成（寄生），外部类可以理解成（宿主）。
@@ -604,15 +676,13 @@ public class Main {
    	// 静态成员内部类
    	public static class Inner{}
    }
-   
+
    Outer.Inner in =  new Outer.Inner();
-   
+
    ```
 
    - 静态内部类中**可以**直接访问外部类的静态成员
    - 静态内部类**不可以**直接访问外部类的实例成员
-
-   
 
 2. 成员内部类
 
@@ -621,7 +691,7 @@ public class Main {
        // 成员内部类
        public class Inner {}
    }
-   
+
    Outer.Inner in =  new Outer().new  Inner();
    ```
 
@@ -637,16 +707,14 @@ public class Main {
        class LocalInnerClass {
          // 局部内部类的内容
        }
-   
+
        // 使用局部内部类
        LocalInnerClass inner = new LocalInnerClass();
        inner.someMethod();
      }
    }
-   
-   ```
 
-   
+   ```
 
 4. 匿名内部类
 
@@ -655,11 +723,11 @@ public class Main {
    {
        // inner class body;
    }
-   
+
    ```
 
-   其中SuperType可以是一个类或者一个接口，construction parameters是构造方法中的参数列表。
-   
+   其中 SuperType 可以是一个类或者一个接口，construction parameters 是构造方法中的参数列表。
+
    ```java
    Thread thread = new Thread(new Runnable() {
        @Override
@@ -668,17 +736,13 @@ public class Main {
        }
    });
    thread.start();
-   
+
    ```
-   
-   在这个例子中，我们创建了一个Thread对象，并将一个Runnable实例作为构造方法的参数传入。这个Runnable实例就是一个匿名内部类，它实现了Runnable接口并重写了run()方法。
-   
-   
-   
+
+   在这个例子中，我们创建了一个 Thread 对象，并将一个 Runnable 实例作为构造方法的参数传入。这个 Runnable 实例就是一个匿名内部类，它实现了 Runnable 接口并重写了 run()方法。
+
    - 匿名内部类是一个没有名字的内部类，同时也代表一个对象。
-   - 匿名内部类的对象类型，相当于是当前new的那个类型的子类类型
-
-
+   - 匿名内部类的对象类型，相当于是当前 new 的那个类型的子类类型
 
 **面试题：**
 
@@ -706,15 +770,11 @@ public class Main {
 }
 ```
 
-
-
 ## 包装类
 
-Java为了实现一切皆对象，为8种基本类型提供了对应的引用类型
+Java 为了实现一切皆对象，为 8 种基本类型提供了对应的引用类型
 
 集合和泛型其实也只能支持包装类型，不支持基本数据类型
-
-
 
 特点：
 
@@ -722,7 +782,7 @@ Java为了实现一切皆对象，为8种基本类型提供了对应的引用类
 
 - 自动拆箱：包装类型的变量可以直接赋值给基本数据类型的变量。
 
-- 包装类的变量的默认值可以是null，容错率更高
+- 包装类的变量的默认值可以是 null，容错率更高
 
 - 可以把基本类型的数据转换成字符串类型(用处不大)
 
@@ -731,16 +791,12 @@ Java为了实现一切皆对象，为8种基本类型提供了对应的引用类
   调用Integer.toString(基本类型的数据)。
   ```
 
-  
-
 - 可以把字符串类型的数值转换成真实的数据类型（真的很有用）
 
   ```java
   Integer.parseInt(“字符串类型的整数”)
   Double.parseDouble(“字符串类型的小数”)。
   ```
-
-  
 
 | 基本数据类型 | 引用数据类型 |
 | ------------ | ------------ |
@@ -761,13 +817,11 @@ Integer myInt = Integer.valueOf(42);
 
 ```
 
+## Lambda 表达式
 
-
-## Lambda表达式
-
-- Lambda表达式是JDK 8开始后的一种新语法形式
+- Lambda 表达式是 JDK 8 开始后的一种新语法形式
 - **简化匿名内部类的代码写法**
-- Lambda表达式只能简化函数式接口的匿名内部类的写法形式（**什么是函数式接口？**首先必须是接口、其次接口中有且仅有一个抽象方法的形式）
+- Lambda 表达式只能简化函数式接口的匿名内部类的写法形式（**什么是函数式接口？**首先必须是接口、其次接口中有且仅有一个抽象方法的形式）
 
 ```java
 (匿名内部类被重写方法的形参列表) -> {
@@ -777,8 +831,6 @@ Integer myInt = Integer.valueOf(42);
 注：-> 是语法形式，无实际含义
 
 ```
-
-
 
 ```java
 List<String> names = Arrays.asList("peter", "anna", "mike", "xenia");
@@ -790,8 +842,6 @@ Collections.sort(names, new Comparator<String>() {
     }
 });
 ```
-
-
 
 简化一下代码：
 

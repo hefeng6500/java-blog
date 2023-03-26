@@ -1,112 +1,178 @@
 # Java 进阶
 
-## static 关键字
+## 集合类
 
-修饰作用，可以被共享访问，修改
+### 集合
 
-- 修饰静态成员
+Java 中常见的集合类：
 
-  ```java
-  public class User {
-      static String name;
-      int age;
-  }
+1. List：有序的元素集合，允许重复元素，可以根据索引位置访问元素。常用的实现类包括 ArrayList、LinkedList 和 Vector。
 
-  ```
+2. Set：无序的元素集合，不允许重复元素。常用的实现类包括 HashSet、TreeSet 和 LinkedHashSet。
 
-- 修饰静态方法
+3. Map：存储键值对的集合，键不能重复，值可以重复。常用的实现类包括 HashMap、TreeMap 和 LinkedHashMap。
 
-  ```java
-  public class Student {
-      private String name;
-      // 1. 实例方法: 无static修饰的，属于对象的
-      public void study(){
-      	System.out.println(name +  “在好好学习~~~”);
-      }
-      // 2. 静态方法：有static修饰，属于类和对象共享的
-      public static int getMax(int a , int b){
-          return a > b ? a : b;
-      }
-      public static void main(String[] args) {
-          // 1. 类名.静态成员方法
-          System.out.println(Student.getMax(10 , 2));
-          // 注意：同一个类中访问静态成员类名可以不写
-          System.out.println(getMax(2 , 10));
-          // 2. 对象.实例成员方法
-          // study(); // 会报错
-          Student s = new  Student();
-          s.name = "猪八戒";
-          s.study();
-          // 3. 对象.静态成员方法。（不推荐）
-          System.out.println(s.getMax(20 , 10));
-      }
-  }
-  
-  ```
+**Collection 接口是 Java 集合框架的根接口**
 
-注意：
+- **add(E e)**：将元素 e 添加到集合中。
+- **remove(Object o)**：从集合中删除元素 o。
+- **size()**：返回集合中元素的数量。
+- **isEmpty()**：判断集合是否为空。
+- **contains(Object o)**：判断集合是否包含元素 o。
+- **iterator()**：返回一个用于迭代集合中元素的迭代器。
+- **toArray()**：将集合中的元素转换为数组。
+- **clear()**：清空集合中的所有元素。
+- ...
 
-- 静态方法只能访问静态的成员，不可以直接访问实例成员。
-- 实例方法可以访问静态的成员，也可以访问实例成员。
-- 静态方法中是不可以出现 `this` 关键字的。
-- 类名.静态成员变量(推荐)
-- 对象.静态成员变量(不推荐)。
+---
 
+`Collection` 接口的继承体系图:
 
+![](./assets/collection.png)
 
-### static 应用
-
-- 工具类
-
-  特点：内部都是一些静态方法，每个方法完成一个功能；一次编写，处处可用，提高代码的重用性
-
-- 代码块
-
-  **静态代码块:** 
-  格式：static{}
-  特点：需要通过static关键字修饰，随着类的加载而加载，并且自动触发、只执行一次
-  使用场景：在类加载的时候做一些静态数据初始化 的操作，以便后续使用。
-  
-   **构造代码块**（了解，见的少）：
-  格式：{}
-  特点：每次创建对象，调用构造器执行时，都会执行该代码块中的代码，并且在构造器执行前执行
-  使用场景：初始化实例资源。
-
-- 单例
-
-​			饿汉单例：定义一个类，把构造器私有，定义一个静态变量存储一个对象
+**HashSet**
 
 ```java
-/** a、定义一个单例类 */
-public class SingleInstance {
-    /** c.定义一个静态变量存储一个对象即可 :属于类，与类一起加载一次 */
-    public static SingleInstance instance = new SingleInstance ();
-    
-    /** b.单例必须私有构造器*/
-    private SingleInstance (){
-    	System.out.println("创建了一个对象");
+import java.util.HashSet;
+import java.util.Set;
+
+public class SetExample {
+    public static void main(String[] args) {
+        // 创建一个HashSet对象
+        Set<String> set = new HashSet<>();
+
+        // 添加元素
+        set.add("apple");
+        set.add("banana");
+        set.add("orange");
+        set.add("pear");
+
+        // 遍历Set中的元素
+        for (String s : set) {
+            System.out.println(s);
+        }
+
+        // 判断Set中是否包含某个元素
+        if (set.contains("apple")) {
+            System.out.println("Set contains apple.");
+        }
+
+        // 删除Set中的元素
+        set.remove("pear");
+
+        // 输出Set中剩余的元素
+        System.out.println("After remove:");
+        for (String s : set) {
+            System.out.println(s);
+        }
+
+        // 获取Set中元素的个数
+        System.out.println("Set size: " + set.size());
     }
 }
 
 ```
 
+**SortedSet**
 
+SortedSet 是 Java 集合框架中的一个接口，它继承自 Set 接口，表示一组有序的不重复元素。SortedSet 中的元素必须是可比较的，并且根据元素的比较结果进行排序。
 
-​		懒汉单例：定义一个类，把构造器私有，定义一个静态变量存储一个对象，提供一个返回单例对象的方法
+SortedSet 接口的实现类有许多种，常见的有 TreeSet。TreeSet 基于红黑树实现，可以对元素进行自然排序或指定比较器进行排序。
 
 ```java
-/** 定义一个单例类 */
-class SingleInstance{
-    /** 定义一个静态变量存储一个对象即可 :属于类，与类一起加载一次 */
-    public static SingleInstance instance ; // null
-    /** 单例必须私有构造器*/
-    private SingleInstance(){}
-    /** 必须提供一个方法返回一个单例对象  */
-    public static SingleInstance getInstance(){
-        ...
-       
-        return ...;
+import java.util.SortedSet;
+import java.util.TreeSet;
+
+public class SortedSetExample {
+    public static void main(String[] args) {
+        // 创建一个TreeSet对象
+        SortedSet<Integer> set = new TreeSet<>();
+
+        // 添加元素
+        set.add(5);
+        set.add(2);
+        set.add(8);
+        set.add(1);
+        set.add(6);
+
+        // 输出Set中的元素
+        for (Integer i : set) {
+            System.out.println(i);
+        }
+        // 1 2 5 6 8
+
+        // 获取Set中第一个元素和最后一个元素
+        System.out.println("First element: " + set.first());
+        // First element: 1
+        System.out.println("Last element: " + set.last());
+        // Last element: 8
+
+        // 获取小于5的元素
+        SortedSet<Integer> subset = set.headSet(5);
+        System.out.println("Elements less than 5: " + subset);
+        // Elements less than 5: [1, 2]
+
+        // 获取大于等于5的元素
+        SortedSet<Integer> tailset = set.tailSet(5);
+        System.out.println("Elements greater than or equal to 5: " + tailset);
+        // Elements greater than or equal to 5: [5, 6, 8]
     }
 }
+
 ```
 
+---
+
+### 映射
+
+Map 是 Java 集合框架中的一个接口，它表示一组键值对，其中键和值都是 Java 对象。Map 中的键是唯一的，每个键只能对应一个值。Map 接口的实现类有许多种，常见的有 HashMap、TreeMap 和 LinkedHashMap。
+
+`Map` 接口的继承体系图：
+![](./assets/map.png)
+
+```java
+import java.util.HashMap;
+import java.util.Map;
+
+public class MapExample {
+    public static void main(String[] args) {
+        // 创建一个HashMap对象
+        Map<String, Integer> map = new HashMap<>();
+
+        // 添加键值对
+        map.put("apple", 100);
+        map.put("banana", 200);
+        map.put("orange", 300);
+
+        // 输出Map中的所有键值对
+        for (Map.Entry<String, Integer> entry : map.entrySet()) {
+            System.out.println(entry.getKey() + " : " + entry.getValue());
+        }
+        // banana : 200
+        // orange : 300
+        // apple : 100
+
+        // 判断Map中是否包含某个键
+        if (map.containsKey("apple")) {
+            System.out.println("Map contains key apple.");
+        }
+
+        // 删除Map中的某个键值对
+        map.remove("orange");
+
+        // 输出Map中剩余的键值对
+        System.out.println("After remove:");
+        for (Map.Entry<String, Integer> entry : map.entrySet()) {
+            System.out.println(entry.getKey() + " : " + entry.getValue());
+        }
+
+        // banana : 200
+        // apple : 100
+
+        // 获取Map中元素的个数
+        System.out.println("Map size: " + map.size());
+        // Map size: 2
+    }
+}
+
+```
