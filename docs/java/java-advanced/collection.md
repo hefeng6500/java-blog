@@ -1,8 +1,6 @@
-# Java 进阶
+# 集合类
 
-## 集合类
-
-### 集合
+## 集合
 
 Java 中常见的集合类：
 
@@ -123,7 +121,7 @@ public class SortedSetExample {
 
 ---
 
-### 映射
+## 映射
 
 Map 是 Java 集合框架中的一个接口，它表示一组键值对，其中键和值都是 Java 对象。Map 中的键是唯一的，每个键只能对应一个值。Map 接口的实现类有许多种，常见的有 HashMap、TreeMap 和 LinkedHashMap。
 
@@ -174,5 +172,59 @@ public class MapExample {
         // Map size: 2
     }
 }
+```
+
+## 不可变集合
+
+Java 中的不可变集合表示一旦创建就不能被修改，所有的修改操作都会导致返回新的集合对象。Java 中可以使用以下几种方式来创建不可变集合：
+
+1. 使用 `Collections.unmodifiableXXX()` 方法：Java 提供了一组工具方法来将现有的可变集合转换为不可变集合，例如 `unmodifiableList()`、`unmodifiableSet()`和 `unmodifiableMap()` 等。这些方法返回的集合是只读的，任何修改操作都会导致 `UnsupportedOperationException` 异常。
+
+```java
+List<String> mutableList = new ArrayList<>(Arrays.asList("a", "b", "c"));
+List<String> immutableList = Collections.unmodifiableList(mutableList);
+```
+
+2. 使用 Guava 组件库：Google Guava 提供了 `ImmutableXXX` 类和相应的 `builder` 模式来创建不可变集合。例如，`ImmutableList`、`ImmutableSet` 和 `ImmutableMap` 等。
+
+```java
+List<String> immutableList = ImmutableList.of("a", "b", "c");
+Set<Integer> immutableSet = ImmutableSet.of(1, 2, 3);
+Map<String, Integer> immutableMap = ImmutableMap.of("a", 1, "b", 2, "c", 3);
+
+```
+
+## Stream 流
+
+在 Java 8 中，得益于 Lambda 所带来的函数式编程， 引入了一个全新的 Stream 流概念。目的：**用于简化集合和数组操作的 API**。
+
+**Stream 流有以下几个特点：**
+
+1. Stream 不存储数据：stream 并不会在内存中保存数据，它们是依次处理每个数据项生成的，所以一个 stream 的大小并不受限制，而且数据源中的数据也可以是无限的。
+
+2. Stream 操作是惰性的：stream 中的操作都是惰性执行的，这意味着它们不会立即处理所有的元素，而是在需要时才逐个进行处理。
+
+3. Stream 可以操作任何类型的数据：虽然我们通常使用 Stream 处理集合类数据，但 Stream API 可以用来处理任何类型的数据，甚至是 I/O 操作和网络操作返回的数据流。
+
+Stream 流的常用方法：
+
+| 方法    | 描述                                                                 |
+| ------- | -------------------------------------------------------------------- |
+| filter  | 使用给定的谓词测试对象，并将符合条件的对象放入一个新的 Stream 中。   |
+| map     | 对 Stream 中的每个元素应用一个函数，并将结果放入一个新的 Stream 中。 |
+| reduce  | 将 Stream 中的元素组合起来，产生一个新的值。                         |
+| collect | 将 Stream 中的元素转换成集合或者其他数据结构。                       |
+| forEach | 对 Stream 中的每个元素执行给定的操作。                               |
+| sorted  | 对 Stream 中的元素进行排序。                                         |
+
+```java
+// 创建一个字符串列表
+List<String> strings = Arrays.asList("abc", "", "bc", "efg", "abcd", "", "jkl");
+
+// 使用 filter() 方法过滤空字符串并使用 map() 方法将剩余的字符串转换成大写形式
+List<String> filteredAndMapped = strings.stream().filter(s -> !s.isEmpty()).map(String::toUpperCase).collect(Collectors.toList());
+
+// 输出结果
+System.out.println(filteredAndMapped);
 
 ```

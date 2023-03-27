@@ -17,7 +17,11 @@ export default {
       },
       {
         text: "Java进阶",
-        items: [{ text: "JavaSE进阶", link: "/java/java-advanced/" }],
+        items: [
+          { text: "集合", link: "/java/java-advanced/collection" },
+          { text: "异常", link: "/java/java-advanced/exception" },
+          { text: "日志", link: "/java/java-advanced/log" },
+        ],
       },
       {
         text: "Spring",
@@ -102,4 +106,4 @@ export default {
       buttonText: "Search",
     },
   },
-}
+};
