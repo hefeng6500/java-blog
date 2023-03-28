@@ -29,7 +29,7 @@ public static void main(String[] args) {
 }
 ```
 
-![](./assets/4.png)
+![](./assets/4.png){data-zoomable}
 
 "传智"，"教育"，"中心" 都存储在字符串常量池中是不能更改的，`String` 变量每次的修改其实都是产生并指向了新的字符串对象。
 

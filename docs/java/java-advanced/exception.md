@@ -9,7 +9,7 @@
 
 **异常体系：**
 
-![](./assets/exception.png)
+![](./assets/exception.png){data-zoomable}
 
 **分类：**
 

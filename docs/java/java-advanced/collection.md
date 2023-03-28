@@ -26,7 +26,7 @@ Java 中常见的集合类：
 
 `Collection` 接口的继承体系图:
 
-![](./assets/collection.png)
+![](./assets/collection.png){data-zoomable}
 
 **HashSet**
 
@@ -126,7 +126,7 @@ public class SortedSetExample {
 Map 是 Java 集合框架中的一个接口，它表示一组键值对，其中键和值都是 Java 对象。Map 中的键是唯一的，每个键只能对应一个值。Map 接口的实现类有许多种，常见的有 HashMap、TreeMap 和 LinkedHashMap。
 
 `Map` 接口的继承体系图：
-![](./assets/map.png)
+![](./assets/map.png){data-zoomable}
 
 ```java
 import java.util.HashMap;
