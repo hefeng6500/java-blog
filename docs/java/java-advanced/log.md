@@ -35,3 +35,105 @@ Logback 具有以下特点：
 - 灵活易用：Logback 支持多种输出方式，比如控制台、文件、邮件等。同时，Logback 可以通过配置文件或编程方式对日志输出进行细粒度的控制。
 
 - 可靠性强：Logback 可以在运行时动态改变日志配置，同时还提供了失败重试、日志备份等机制，可以保证日志记录的可靠性
+
+## 快速入门
+
+1. 导入 Logback 框架到项目中去。在项目下新建文件夹 lib，导入 Logback 的 jar 包到该文件夹下
+
+2. 将存放 jar 文件的 lib 文件夹添加到项目依赖库中去。
+
+   - logback-classic-1.2.3.jar
+   - logback-core-1.2.3.jar
+   - slf4j-api-1.7.26.jar
+
+3. 将 Logback 的核心配置文件 logback.xml 直接拷贝到 src 目录下（必须是 src 下）
+
+4. 创建 Logback 框架提供的 Logger 日志对象，后续使用其方法记录系统的日志信息。
+
+logback.xml 配置如下：
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <!--
+        CONSOLE ：表示当前的日志信息是可以输出到控制台的。
+    -->
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <!--输出流对象 默认 System.out 改为 System.err-->
+        <target>System.out</target>
+        <encoder>
+            <!--格式化输出：%d表示日期，%thread表示线程名，%-5level：级别从左显示5个字符宽度
+                %msg：日志消息，%n是换行符-->
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%-5level]  %c [%thread] : %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- File是输出的方向通向文件的 -->
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+            <charset>utf-8</charset>
+        </encoder>
+        <!--日志输出路径-->
+        <file>D:/code/itheima-data.log</file>
+        <!--指定日志文件拆分和压缩规则-->
+        <rollingPolicy
+                class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <!--通过指定压缩文件名称，来确定分割文件方式-->
+            <fileNamePattern>D:/code/itheima-data2-%d{yyyy-MMdd}.log%i.gz</fileNamePattern>
+            <!--文件拆分大小-->
+            <maxFileSize>1MB</maxFileSize>
+        </rollingPolicy>
+    </appender>
+
+    <!--
+
+    level:用来设置打印级别，大小写无关：TRACE, DEBUG, INFO, WARN, ERROR, ALL 和 OFF
+   ， 默认debug
+    <root>可以包含零个或多个<appender-ref>元素，标识这个输出位置将会被本日志级别控制。
+    -->
+    <root level="ALL">
+        <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="FILE" />
+    </root>
+</configuration>
+```
+
+示例：
+
+```java
+package com.yang.logback;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+public class Test {
+
+    //    创建 Logback 日志对象，代表日志技术
+    public static final Logger LOGGER = LoggerFactory.getLogger("Test.class");
+
+    public static void main(String[] args) {
+        LOGGER.info("Hello");
+        LOGGER.debug("debugger");
+
+        LOGGER.error("Error message");
+        LOGGER.trace("trace");
+
+        try {
+            int a = 10;
+            int b = 0;
+
+            System.out.println(a / b);
+        } catch (Exception e) {
+            e.printStackTrace();
+            LOGGER.error(e.toString());
+        }
+    }
+}
+
+```
+
+### 日志级别
+
+TRACE < DEBUG < INFO < WARN < ERROR; 默认级别是 DEBUG，对应其方法
+当在 `logback.xml` 文件中设置了某种日志级别后，系统将只输出当前级别，以及高于当前级别的日志。
