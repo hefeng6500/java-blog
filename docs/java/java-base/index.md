@@ -1,7 +1,5 @@
 # Java 基础
 
-
-
 ## 数据类型
 
 | 数据类型 | 关键字         | 取值范围                                             | 内存占用（字节数） |
@@ -25,16 +23,14 @@ byte 取值范围：-128~127 解释说明：
 
 [计算机中的进制转换](./hexadecimal "计算机中的进制转换")
 
-
-
 ## 数据类型转换
 
 **自动类型转换**
 
 - 为什么要进行类型转换？
-  	存在不同类型的变量赋值给其他类型的变量
+  存在不同类型的变量赋值给其他类型的变量
 - 自动类型转换是什么样的？
-  	类型范围小的变量，可以直接赋值给类型范围大的变量。
+  类型范围小的变量，可以直接赋值给类型范围大的变量。
 
 ```
 byte	-->	short	-->	int	-->	long	-->	float	-->	double
@@ -52,8 +48,6 @@ byte b = (int)a;
 - 强制类型转换**可能造成数据(丢失)溢出**
 - 浮点型强转成整型，直接丢掉小数部分，保留整数部分返回
 
-
-
 ## 运算符
 
 - 基本算数运算符
@@ -65,11 +59,7 @@ byte b = (int)a;
 - 三元运算符
 - 运算符优先级
 
-
-
-![](./assets/3.png)
-
-
+![](./assets/3.png){data-zoomable}
 
 ## 流程控制
 
@@ -85,8 +75,6 @@ for (int i = 0; i < 3; i++) {
 
 ```
 
-
-
 ## 键盘录入技术
 
 ```java
@@ -97,13 +85,11 @@ public class Test {
         Scanner sc = new Scanner(System.in);
 
         sc.nextInt(); // 输入的整形数据
-        
+
         sc.next(); // 输入的字符串
     }
 }
 ```
-
-
 
 ## Random
 
@@ -113,24 +99,12 @@ import java.util.Random;
 public class Test {
     public static void main (String args[]){
         Random random = new Random();
-        
+
         random.nextInt(10); // [0, 10) 左闭右开区间
         random.nextInt(100) + 1; // [1, 100] 之间的整数
     }
 }
 ```
-
-
-
-
-
-
-
-
-
-
-
-
 
 **附件**
 

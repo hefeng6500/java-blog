@@ -204,9 +204,9 @@ public class Student extends People {}
 
 多态就是同一个接口，使用不同的实例而执行不同操作，如图所示：两张图说明多态
 
-![](./assets/5.png)
+![](./assets/5.png){data-zoomable}
 
-![](./assets/6.jpg)
+![](./assets/6.jpg){data-zoomable}
 
 **重写（@Override）**
 

@@ -1,18 +1,17 @@
-import DefaultTheme from "vitepress/theme";
-import MyLayout from "./MyLayout.vue";
+import DefaultTheme from "vitepress/theme"
+import MyLayout from "./MyLayout.vue"
 
-import { onMounted, watch, nextTick } from "vue";
-import { useRoute } from "vitepress";
-import mediumZoom from "medium-zoom";
-
-import hljs from "highlight.js/lib/core";
-import java from "highlight.js/lib/languages/java";
+import { onMounted, watch, nextTick } from "vue"
+import { inBrowser, useRoute } from "vitepress"
+import mediumZoom from "medium-zoom"
+import hljs from "highlight.js/lib/core"
+import java from "highlight.js/lib/languages/java"
 
 // import "github-markdown-css";
-import "./index.scss";
-import "highlight.js/styles/github.css";
+import "./index.scss"
+import "highlight.js/styles/github.css"
 
-hljs.registerLanguage("java", java);
+hljs.registerLanguage("java", java)
 
 export default {
   ...DefaultTheme,
@@ -23,8 +22,15 @@ export default {
   },
 
   setup() {
-    onMounted(() => {
-      mediumZoom("[data-zoomable]", { background: "var(--vp-c-bg)" });
-    });
+    const route = useRoute()
+    watch(
+      () => route.path,
+      () =>
+        nextTick(() => {
+          if (inBrowser)
+            mediumZoom("[data-zoomable]", { background: "var(--vp-c-bg)" })
+        }),
+      { immediate: true }
+    )
   },
-};
+}
