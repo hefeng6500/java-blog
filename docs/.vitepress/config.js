@@ -21,6 +21,7 @@ export default {
           { text: "集合", link: "/java/java-advanced/collection" },
           { text: "异常", link: "/java/java-advanced/exception" },
           { text: "日志", link: "/java/java-advanced/log" },
+          { text: "学习案例", link: "/java/java-advanced/case" },
         ],
       },
       {
@@ -106,4 +107,4 @@ export default {
       buttonText: "Search",
     },
   },
-};
+}
