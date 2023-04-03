@@ -12,7 +12,7 @@ export default {
           { text: "面向对象", link: "/java/java-base/object-oriented" },
           { text: "常用 API", link: "/java/java-base/java-api" },
           { text: "学习案例", link: "/java/java-base/case" },
-          { text: "IDEA", link: "/java/java-base/idea" },
+          { text: "IDEA", link: "/java/java-base/multithread" },
         ],
       },
       {
@@ -21,6 +21,9 @@ export default {
           { text: "集合", link: "/java/java-advanced/collection" },
           { text: "异常", link: "/java/java-advanced/exception" },
           { text: "日志", link: "/java/java-advanced/log" },
+          { text: "File", link: "/java/java-advanced/file" },
+          { text: "IO 流", link: "/java/java-advanced/io" },
+          { text: "多线程", link: "/java/java-advanced/io" },
           { text: "学习案例", link: "/java/java-advanced/case" },
         ],
       },
