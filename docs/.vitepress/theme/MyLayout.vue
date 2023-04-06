@@ -60,3 +60,9 @@ watch(
   justify-content: center;
 }
 </style>
+
+<style>
+.medium-zoom-image--opened {
+  z-index: 9999;
+}
+</style>
