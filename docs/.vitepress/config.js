@@ -23,7 +23,7 @@ export default {
           { text: "日志", link: "/java/java-advanced/log" },
           { text: "File", link: "/java/java-advanced/file" },
           { text: "IO 流", link: "/java/java-advanced/io" },
-          { text: "多线程", link: "/java/java-advanced/io" },
+          { text: "多线程", link: "/java/java-advanced/thread" },
           { text: "学习案例", link: "/java/java-advanced/case" },
         ],
       },
@@ -110,4 +110,4 @@ export default {
       buttonText: "Search",
     },
   },
-}
+};
