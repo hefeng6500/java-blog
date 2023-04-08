@@ -131,7 +131,7 @@ Java中提供了一些线程安全的机制，包括同步锁、volatile变量�
 
    同步锁是Java中最常用的线程安全机制，可以使用synchronized关键字来实现。同步锁可以保证同一时间只有一个线程可以访问共享资源，其他线程需要等待。同步锁的实现基于Java中的对象锁，当一个线程获取了该对象的锁时，其他线程必须等待锁的释放才能继续执行。
 
-   ```java 
+   ```java
    public class SynchronizedExample {
        private int count = 0;
    
@@ -275,3 +275,261 @@ Java中提供了一些线程安全的机制，包括同步锁、volatile变量�
    ```
 
    在这个例子中，使用ReentrantLock作为锁对象，通过调用lock()方法获取锁，使用try-finally代码块来确保锁的释放。increment、decrement和getCount方法都使用了锁，以保证线程安全。注意到在获取锁之后，必须使用try-finally语句块确保锁的释放，否则如果在获取锁之后发生异常，就会导致锁无法释放，从而出现死锁等问题。
+
+## 线程通信
+
+线程通信是指多个线程之间通过共享变量来协调工作，以便完成一些需要多个线程协作才能完成的任务。在 Java 中，线程通信主要是通过对象的 wait()、notify()、notifyAll() 方法来实现的。
+
+具体来说，线程通信的基本模型如下：
+
+- 一个线程通过某种方式获取对象的锁，并进入同步块；
+- 这个线程在同步块中执行一些操作，并检查某些条件是否满足；
+- 如果条件不满足，这个线程就调用对象的 wait() 方法，将自己挂起，等待其他线程来通知它；
+- 另一个线程获取同一个对象的锁，并进入同步块；
+- 这个线程执行一些操作，并修改了某些条件；
+- 如果这些条件与挂起的线程等待的条件相符，就调用对象的 notify() 或 notifyAll() 方法，唤醒挂起的线程；
+- 被唤醒的线程重新进入同步块，重新检查条件是否满足，如果条件满足就继续执行操作，否则再次调用 wait() 方法挂起。
+
+```java
+public class Main {
+
+    public static void main(String[] args) {
+        Message message = new Message();
+
+        Thread producer = new Thread(new Producer(message));
+        Thread consumer = new Thread(new Consumer(message));
+
+        producer.start();
+        consumer.start();
+    }
+
+    static class Message {
+        private String content;
+        private boolean available = false;
+
+        public synchronized String read() {
+            while (!available) {
+                try {
+                    wait();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+            available = false;
+            notify();
+            return content;
+        }
+
+        public synchronized void write(String content) {
+            while (available) {
+                try {
+                    wait();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+            this.content = content;
+            available = true;
+            notify();
+        }
+    }
+
+    static class Producer implements Runnable {
+        private Message message;
+
+        public Producer(Message message) {
+            this.message = message;
+        }
+
+        @Override
+        public void run() {
+            String[] messages = {"Message 1", "Message 2", "Message 3"};
+
+            for (String message : messages) {
+                this.message.write(message);
+                System.out.println("Produced: " + message);
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            this.message.write("EOF");
+            System.out.println("Producer finished.");
+        }
+    }
+
+    static class Consumer implements Runnable {
+        private Message message;
+
+        public Consumer(Message message) {
+            this.message = message;
+        }
+
+        @Override
+        public void run() {
+            String message;
+            do {
+                message = this.message.read();
+                System.out.println("Consumed: " + message);
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            } while (!message.equals("EOF"));
+
+            System.out.println("Consumer finished.");
+        }
+    }
+}
+
+```
+
+在这个示例中，有两个线程：一个生产者线程和一个消费者线程。它们之间通过 Message 对象来通信。
+
+Message 类中有两个方法：read() 和 write()。这两个方法都是同步方法，并且使用了 wait()、notify() 和 notifyAll() 方法来实现线程通信。
+
+Producer 类和 Consumer 类都实现了 Runnable 接口，它们分别在自己的线程中运行。Producer 线程在运行时向 Message 对象中写入一些字符串消息，并且每写入一条消息就休眠 1 秒钟。当 Producer 线程写入完所有的消息后，它会向 Message 对象中写入一个特殊的消息 "EOF"，表示消息已经全部写入完毕。然后 Producer 线程结束运行。
+
+Consumer 线程在运行时从 Message 对象中读取消息，并且每读取一条消息就休眠 1 秒钟。当 Consumer 线程读取到 "EOF" 消息时，它停止读取并结束运行。
+
+这个示例中的线程通信过程是这样的：
+
+- 初始时，Message 对象中的 available 标志为 false，表示没有消息可供消费；
+- Producer 线程在运行时向 Message 对象中写入第一条消息，并将 available 标志设置为 true，然后调用 notify() 方法，唤醒 Consumer 线程；
+- Consumer 线程被唤醒后，读取到第一条消息，并将 available 标志设置为 false，然后调用 notify() 方法，唤醒 Producer 线程；
+- Producer 线程被唤醒后，向 Message 对象中写入第二条消息，并将 available 标志设置为 true，然后调用 notify() 方法，唤醒 Consumer 线程；
+- Consumer 线程被唤醒后，读取到第二条消息，并将 available 标志设置为 false，然后调用 notify() 方法，唤醒 Producer 线程；
+- 重复上述过程，直到 Producer 线程向 Message 对象中写入 "EOF" 消息为止。
+
+这个示例演示了线程通信的基本过程，通过共享变量和 wait()、notify()、notifyAll() 方法，不同的线程之间可以协作完成一些复杂的任务。在实际应用中，线程通信是非常常见的，例如多线程下载、多线程上传、多线程计算等等。
+
+## 线程池
+
+线程池是一种管理和复用线程的机制。它能够通过控制并发任务的数量来提高应用程序的性能和稳定性
+
+### 创建线程池
+
+1. **使用 `ExecutorService` 的实现类 `ThreadPoolExecutor` 自创建一个线程池对象**
+
+   `ThreadPoolExecutor` 类的构造方法如下：
+
+   ```java
+   public ThreadPoolExecutor(int corePoolSize,
+                              int maximumPoolSize,
+                              long keepAliveTime,
+                              TimeUnit unit,
+                              BlockingQueue<Runnable> workQueue,
+                              ThreadFactory threadFactory,
+                              RejectedExecutionHandler handler)
+       
+   ```
+
+   | 参数名          | 说明                                                         |
+   | --------------- | ------------------------------------------------------------ |
+   | corePoolSize    | 线程池中的核心线程数量。即使它们是空闲的也会保留在池中。     |
+   | maximumPoolSize | 线程池中允许的最大线程数量。                                 |
+   | keepAliveTime   | 线程空闲时间，当线程空闲时间达到此时间时，线程会被终止。     |
+   | unit            | 时间单位。例如 `TimeUnit.SECONDS`。                          |
+   | workQueue       | 任务队列，用于保存等待执行的任务。可以使用不同的队列来控制任务的排队策略。 |
+   | threadFactory   | 用于创建新线程的工厂。                                       |
+   | handler         | 拒绝策略，用于处理任务添加到线程池中失败的情况。             |
+
+   **新任务拒绝策略**
+
+   | 策略                                   | 详解                                                         |
+   | -------------------------------------- | ------------------------------------------------------------ |
+   | ThreadPoolExecutor.AbortPolicy         | 丢弃任务并抛出RejectedExecutionException异常。**是默认的策略** |
+   | ThreadPoolExecutor.DiscardPolicy：     | 丢弃任务，但是不抛出异常 这是不推荐的做法                    |
+   | ThreadPoolExecutor.DiscardOldestPolicy | 抛弃队列中等待最久的任务 然后把当前任务加入队列中            |
+   | ThreadPoolExecutor.CallerRunsPolicy    | 由主线程负责调用任务的run()方法从而绕过线程池直接执行        |
+
+   **示例:**
+
+   创建了一个大小为 5~10 的线程池，使用 ArrayBlockingQueue 作为任务队列，返回的是 ThreadPoolExecutor 对象
+
+   ```java
+   int corePoolSize = 5;
+   int maxPoolSize = 10;
+   long keepAliveTime = 60L;
+   
+   BlockingQueue<Runnable> workQueue = new ArrayBlockingQueue<>(100);
+   
+   ThreadPoolExecutor threadPool = new ThreadPoolExecutor(corePoolSize, maxPoolSize, keepAliveTime, TimeUnit.SECONDS, workQueue);
+   ```
+
+   **ExecutorService的常用方法**
+
+   | 方法名称                           | 说明                                                         |
+   | ---------------------------------- | ------------------------------------------------------------ |
+   | void execute(Runnable command)     | 执行任务/命令，没有返回值，一般用来执行 Runnable 任务        |
+   | Future\<T\> submit(Callable\<T\> task) | 执行任务，返回未来任务对象获取线程结果，一般拿来执行 Callable 任务 |
+   | void shutdown()                    | 等任务执行完毕后关闭线程池                                   |
+   | List\<Runnable\> shutdownNow() | 立刻关闭，停止正在执行的任务，并返回队列中未执行的任务 |
+
+   示例：
+
+   ```java
+   import java.util.concurrent.*;
+   
+   public class ThreadPoolExecutorExample {
+       public static void main(String[] args) {
+           // 创建一个任务队列，使用 LinkedBlockingQueue
+           BlockingQueue<Runnable> queue = new LinkedBlockingQueue<>(10);
+   
+           // 创建一个线程工厂，用于创建线程
+           ThreadFactory factory = Executors.defaultThreadFactory();
+   
+           // 创建一个拒绝策略，用于处理任务添加到线程池中失败的情况
+           RejectedExecutionHandler handler = new ThreadPoolExecutor.AbortPolicy();
+   
+           // 创建一个 ThreadPoolExecutor 对象，设置线程池中的核心线程数量为 5，
+           // 最大线程数量为 10，空闲线程的存活时间为 60 秒，使用队列 queue，
+           // 使用工厂 factory 创建线程，使用 handler 处理任务添加失败的情况。
+           ThreadPoolExecutor executor = new ThreadPoolExecutor(5, 10, 60L, TimeUnit.SECONDS, queue, factory, handler);
+   
+           // 提交一些任务给线程池
+           for (int i = 0; i < 20; i++) {
+               executor.execute(new Task(i));
+           }
+   
+           // 关闭线程池
+           executor.shutdown();
+       }
+   
+       static class Task implements Runnable {
+           private final int taskId;
+   
+           public Task(int taskId) {
+               this.taskId = taskId;
+           }
+   
+           @Override
+           public void run() {
+               System.out.println("Task " + taskId + " is running in " + Thread.currentThread().getName());
+           }
+       }
+   }
+   
+   ```
+
+2. **使用 `Executors`（线程池的工具类）调用方法返回不同特点的线程池对象**
+
+   ```java
+   ExecutorService threadPool = Executors.newFixedThreadPool(10);
+   ```
+
+   创建了一个固定大小为 10 的线程池
+
+`Executors` 类提供了多种静态工厂方法来创建不同类型的线程池。
+
+| 线程池类型              | 说明                                                         |
+| ----------------------- | ------------------------------------------------------------ |
+| newFixedThreadPool      | 创建一个**固定大小的线程池**，线程池中的线程数量是固定的。当线程池中的线程都在执行任务时，新的任务会被放到任务队列中等待执行。如果任务队列已满，则会阻塞等待。 |
+| newCachedThreadPool     | 创建一个**可缓存的线程池**，线程池中的线程数量不固定，根据需要创建新的线程。当线程池中的线程超过了 60 秒没有执行任务，就会被回收。 |
+| newSingleThreadExecutor | 创建一个**只有一个线程的线程池**，线程池中的线程数量为 1。当这个线程正在执行任务时，新的任务会被放到任务队列中等待执行。如果任务队列已满，则会阻塞等待。 |
+| newScheduledThreadPool  | 创建一个**定时执行任务的线程池**，线程池中的线程数量不固定，可以根据需要创建新的线程。这个线程池可以定时执行任务，例如每秒钟执行一次任务。 |
+
+![](./assets/executors.png){data-zoomable}
