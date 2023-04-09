@@ -244,7 +244,7 @@ Java 中提供了一些线程安全的机制，包括同步锁、volatile 变量
    public class LockExample {
        private int count = 0;
        private final Lock lock = new ReentrantLock();
-
+   
        public void increment() {
            lock.lock();
            try {
@@ -253,7 +253,7 @@ Java 中提供了一些线程安全的机制，包括同步锁、volatile 变量
                lock.unlock();
            }
        }
-
+   
        public void decrement() {
            lock.lock();
            try {
@@ -262,7 +262,7 @@ Java 中提供了一些线程安全的机制，包括同步锁、volatile 变量
                lock.unlock();
            }
        }
-
+   
        public int getCount() {
            lock.lock();
            try {
@@ -551,12 +551,12 @@ Consumer 线程在运行时从 Message 对象中读取消息，并且每读取�
    ```java
    import java.util.Timer;
    import java.util.TimerTask;
-
+   
    public class Timer01 {
        public static void main(String[] args) {
    //        创建定时器
            Timer timer = new Timer();
-
+   
    //        调用方法处理定时任务
            timer.schedule(new TimerTask() {
                @Override
@@ -646,13 +646,13 @@ public class Timer03 {
    import java.util.concurrent.Executors;
    import java.util.concurrent.ScheduledExecutorService;
    import java.util.concurrent.TimeUnit;
-
+   
    public class ScheduledExecutorService01 {
-
+   
        public static void main(String[] args) {
    //        1. 创建 ScheduleExecutorService 线程池做定时器
            ScheduledExecutorService pool = Executors.newScheduledThreadPool(3);
-
+   
    //        开启定时任务
            pool.scheduleAtFixedRate(new TimerTask() {
                @Override
@@ -666,17 +666,17 @@ public class Timer03 {
                    }
                }
            }, 0, 2, TimeUnit.SECONDS);
-
+   
            pool.scheduleAtFixedRate(new TimerTask() {
                @Override
                public void run() {
                    System.out.println(Thread.currentThread().getName() + "" +
                            "执行 BBB：" + new Date());
-
+   
                    System.out.println(10 / 0);
                }
            }, 0, 2, TimeUnit.SECONDS);
-
+   
            pool.scheduleAtFixedRate(new TimerTask() {
                @Override
                public void run() {
@@ -686,7 +686,7 @@ public class Timer03 {
            }, 0, 2, TimeUnit.SECONDS);
        }
    }
-
+   
    ```
 
 ## 进程和线程
@@ -707,3 +707,17 @@ CPU 会轮询为系统的每个线程服务，由于 CPU 切换的速度很快�
 ![](./assets/thread.png){data-zoomable}
 
 **sleep() 如果获取锁对象时，不会释放锁**
+
+
+
+### 线程的生命周期
+
+线程的6种状态总结
+
+| NEW(新建)               | 线程刚被创建，但是并未启动。                                 |
+| ----------------------- | ------------------------------------------------------------ |
+| Runnable(可运行)        | 线程已经调用了start()等待CPU调度                             |
+| Blocked(锁阻塞)         | 线程在执行的时候未竞争到锁对象，则该线程进入Blocked状态；。  |
+| Waiting(无限等待)       | 一个线程进入Waiting状态，另一个线程调用notify或者notifyAll方法才能够唤醒 |
+| Timed Waiting(计时等待) | 同waiting状态，有几个方法有超时参数，调用他们将进入Timed Waiting状态。带有超时参数的常用方法有Thread.sleep 、Object.wait。 |
+| Teminated(被终止)       | 因为run方法正常退出而死亡，或者因为没有捕获的异常终止了run方法而死亡。 |
