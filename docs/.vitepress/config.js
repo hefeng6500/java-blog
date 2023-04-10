@@ -24,6 +24,7 @@ export default {
           { text: "File", link: "/java/java-advanced/file" },
           { text: "IO 流", link: "/java/java-advanced/io" },
           { text: "多线程", link: "/java/java-advanced/thread" },
+          { text: "网络通信", link: "/java/java-advanced/net" },
           { text: "学习案例", link: "/java/java-advanced/case" },
         ],
       },
