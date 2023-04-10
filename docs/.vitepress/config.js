@@ -26,6 +26,9 @@ export default {
           { text: "多线程", link: "/java/java-advanced/thread" },
           { text: "网络通信", link: "/java/java-advanced/net" },
           { text: "学习案例", link: "/java/java-advanced/case" },
+          { text: "单元测试", link: "/java/java-advanced/unit-test" },
+          { text: "注解", link: "/java/java-advanced/annotation" },
+          { text: "动态代理", link: "/java/java-advanced/dynamic-proxy" },
         ],
       },
       {
