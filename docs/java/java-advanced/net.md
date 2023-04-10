@@ -488,4 +488,227 @@ class ServerThread implements Runnable {
 
 
 
-TCP通信实战案例-模拟BS系统
+TCP 即时通信
+
+```java
+package com.yang.bs;
+
+import java.io.*;
+import java.net.*;
+import java.util.*;
+
+public class Server {
+    // 用于存储所有已连接的客户端
+    private ArrayList<ClientHandler> clients = new ArrayList<>();
+
+    public static void main(String[] args) {
+        new Server().runServer();
+    }
+
+    public void runServer() {
+        try {
+            // 创建ServerSocket并监听端口
+            ServerSocket serverSocket = new ServerSocket(8000);
+            System.out.println("Server started on port 8000...");
+
+            while (true) {
+                // 接受客户端连接
+                Socket clientSocket = serverSocket.accept();
+                System.out.println("Client connected: " + clientSocket);
+
+                // 创建ClientHandler并将其添加到客户端列表中
+                ClientHandler client = new ClientHandler(clientSocket, this);
+                clients.add(client);
+
+                // 启动ClientHandler线程处理客户端消息
+                Thread thread = new Thread(client);
+                thread.start();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    // 用于广播消息给所有客户端
+    public void broadcast(String message) {
+        for (ClientHandler client : clients) {
+            client.sendMessage(message);
+        }
+    }
+
+    // 用于将客户端从客户端列表中移除
+    public void removeClient(ClientHandler client) {
+        clients.remove(client);
+    }
+}
+
+class ClientHandler implements Runnable {
+    private Socket clientSocket;
+    private Server server;
+    private PrintWriter out;
+    private BufferedReader in;
+
+    public ClientHandler(Socket clientSocket, Server server) {
+        this.clientSocket = clientSocket;
+        this.server = server;
+    }
+
+    public void run() {
+        try {
+            // 获取客户端输入流和输出流
+            out = new PrintWriter(clientSocket.getOutputStream(), true);
+            in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+
+            String inputLine;
+            while ((inputLine = in.readLine()) != null) {
+                // 将客户端消息广播给所有客户端
+                server.broadcast(inputLine);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            // 将客户端从客户端列表中移除
+            server.removeClient(this);
+
+            try {
+                clientSocket.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    // 用于向客户端发送消息
+    public void sendMessage(String message) {
+        out.println(message);
+    }
+}
+
+
+```
+
+```java
+package com.yang.bs;
+
+import java.io.*;
+import java.net.*;
+import java.util.*;
+
+public class Client {
+    public static void main(String[] args) {
+        try {
+            // 创建Socket并连接到服务器
+            Socket socket = new Socket("localhost", 8000);
+            System.out.println("Connected to server: " + socket);
+
+            // 获取输入流和输出流
+            PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+            BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+
+            // 创建一个线程用于接收服务器发送的消息
+            Thread thread = new Thread(() -> {
+                try {
+                    String inputLine;
+                    while ((inputLine = in.readLine()) != null) {
+                        System.out.println(inputLine);
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            });
+            thread.start();
+
+            // 读取用户输入并发送到服务器
+            Scanner scanner = new Scanner(System.in);
+            while (true) {
+                String message = scanner.nextLine();
+                out.println(message);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}
+```
+
+上述例子， 客户端记得 idea 多实例多开
+
+
+
+**BS 开发**
+
+```java
+package com.yang.bshttp;
+
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.util.concurrent.*;
+import java.io.PrintStream;
+
+/**
+    了解：BS-浏览器-服务器基本了解。
+
+    引入：
+        之前客户端和服务端都需要自己开发。也就是CS架构。
+        接下来模拟一下BS架构。
+
+    客户端：浏览器。（无需开发）
+    服务端：自己开发。
+    需求：在浏览器中请求本程序，响应一个网页文字给浏览器显示
+
+
+ */
+public class BSserverDemo {
+    // 使用静态变量记住一个线程池对象
+    private static ExecutorService pool = new ThreadPoolExecutor(3,
+            5, 6, TimeUnit.SECONDS,
+            new ArrayBlockingQueue<>(2)
+            , Executors.defaultThreadFactory(), new ThreadPoolExecutor.AbortPolicy());
+
+    public static void main(String[] args) {
+        try {
+            // 1.注册端口
+            ServerSocket ss = new ServerSocket(8080);
+            // 2.创建一个循环接收多个客户端的请求。
+            while(true){
+                Socket socket = ss.accept();
+                // 3.交给一个独立的线程来处理！
+                pool.execute(new ServerReaderRunnable(socket));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+}
+
+public class ServerReaderRunnable implements Runnable{
+    private Socket socket;
+    public ServerReaderRunnable(Socket socket){
+        this.socket = socket;
+    }
+    @Override
+    public void run() {
+        try {
+            // 浏览器 已经与本线程建立了Socket管道
+            // 响应消息给浏览器显示
+            PrintStream ps = new PrintStream(socket.getOutputStream());
+            // 必须响应HTTP协议格式数据，否则浏览器不认识消息
+            ps.println("HTTP/1.1 200 OK"); // 协议类型和版本 响应成功的消息！
+            ps.println("Content-Type:text/html;charset=UTF-8"); // 响应的数据类型：文本/网页
+
+            ps.println(); // 必须发送一个空行
+
+            // 才可以响应数据回去给浏览器
+            ps.println("<span style='color:red;font-size:90px'>你好世界！</span>");
+            ps.close();
+        } catch (Exception e) {
+            System.out.println(socket.getRemoteSocketAddress() + "下线了！！！");
+        }
+    }
+}
+```
+
+
+
+
+
