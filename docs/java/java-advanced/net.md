@@ -485,3 +485,7 @@ class ServerThread implements Runnable {
 - 服务端需要把在线的Socket管道存储起来
 
 - 一旦收到一个消息要推送给其他管道
+
+
+
+TCP通信实战案例-模拟BS系统
