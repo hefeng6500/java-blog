@@ -1,6 +1,6 @@
 export default {
   base: "/java-blog/",
-  title: "Java",
+  title: "Java 从入门到精通",
   description: "Just playing around.",
 
   themeConfig: {
@@ -31,6 +31,35 @@ export default {
           { text: "注解", link: "/java/java-advanced/annotation" },
           { text: "动态代理", link: "/java/java-advanced/dynamic-proxy" },
         ],
+      },
+      {
+        text: "Java Web",
+        items: [
+          {
+            text: "MySQL",
+            link: "/java/java-web/mysql"
+          },
+          {
+            text: "JDBC",
+            link: "/java/java-web/jdbc"
+          },
+          {
+            text: "Maven",
+            link: "/java/java-web/maven"
+          },
+          {
+            text: "MyBatis",
+            link: "/java/java-web/mybatis"
+          },
+          {
+            text: "Servlet",
+            link: "/java/java-web/servlet"
+          },
+          {
+            text: "JSP",
+            link: "/java/java-web/jsp"
+          },
+        ]
       },
       {
         text: "Spring",
