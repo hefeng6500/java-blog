@@ -1534,7 +1534,7 @@ Servlet类编写好后，要想被访问到，就需要配置其访问路径（=
     
     ```
 
-    访问路径`<http://localhost:8080/demo-web/任意>
+    访问路径 <a href="http://localhost:8080/demo-web/任意" target="_blank" rel="noreferrer">http://localhost:8080/demo-web/任意</a>
 
     ==注意:==`/`和`/*`的区别?
 
