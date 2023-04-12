@@ -559,7 +559,7 @@ public class ReggieApplication {
 
 5. 导入前端资源，包括 js、css、img、html 等 （位置：资源/前端资源）
 
-![](assets/1.png)
+![](assets/1.png){data-zoomable}
 
 6. 创建配置类 WebMvcConfig，设置静态资源映射，否则无法访问页面
 
