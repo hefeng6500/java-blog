@@ -1,12 +1,10 @@
-## Maven&MyBatis
+# Maven
 
 **目标**
 
 > - 能够使用 Maven 进行项目的管理
 > - 能够完成 Mybatis 代理方式查询数据
 > - 能够理解 Mybatis 核心配置文件的配置
-
-## 1，Maven
 
 Maven 是专门用于管理和构建 Java 项目的工具，它的主要功能有：
 
@@ -48,15 +46,15 @@ Maven 是专门用于管理和构建 Java 项目的工具，它的主要功能�
 
 ![image-20210726155212733](assets/image-20210726155212733.png)
 
-### 1.1 Maven 简介
+## 1.1 Maven 简介
 
 > ==Apache Maven== 是一个项目管理和构建==工具==，它基于项目对象模型(POM)的概念，通过一小段描述信息来管理项目的构建、报告和文档。
 >
-> 官网 ：http://maven.apache.org/
+> 官网 ：<http://maven.apache.org/>
 
 通过上面的描述大家只需要知道 Maven 是一个工具即可。Apache 是一个开源组织，将来我们会学习很多 Apache 提供的项目。
 
-#### 1.1.1 Maven 模型
+### 1.1.1 Maven 模型
 
 - 项目对象模型 (Project Object Model)
 - 依赖管理模型(Dependency)
@@ -78,7 +76,7 @@ Maven 是专门用于管理和构建 Java 项目的工具，它的主要功能�
 
 上述 Maven 模型图中还有一部分是仓库。如何理解仓库呢？
 
-#### 1.1.2 仓库
+### 1.1.2 仓库
 
 大家想想这样的场景，我们创建 Maven 项目，在项目中使用坐标来指定项目的依赖，那么依赖的 jar 包到底存储在什么地方呢？其实依赖 jar 包是存储在我们的本地仓库中。而项目运行时从本地仓库中拿需要的依赖 jar 包。
 
@@ -88,7 +86,7 @@ Maven 是专门用于管理和构建 Java 项目的工具，它的主要功能�
 
 - 中央仓库：由 Maven 团队维护的全球唯一的仓库
 
-  - 地址： https://repo1.maven.org/maven2/
+  - 地址： <https://repo1.maven.org/maven2/>
 
 - 远程仓库(私服)：一般由公司团队搭建的私有仓库
 
@@ -108,7 +106,7 @@ Maven 是专门用于管理和构建 Java 项目的工具，它的主要功能�
 
 ![](assets/image-20210726162815045.png){data-zoomable}
 
-### 1.2 Maven 安装配置
+## 1.2 Maven 安装配置
 
 - 解压 apache-maven-3.6.1.rar 既安装完成
 
@@ -161,9 +159,9 @@ Maven 是专门用于管理和构建 Java 项目的工具，它的主要功能�
   </mirror>
   ```
 
-### 1.3 Maven 基本使用
+## 1.3 Maven 基本使用
 
-#### 1.3.1 Maven 常用命令
+### 1.3.1 Maven 常用命令
 
 > - compile ：编译
 >
@@ -248,7 +246,7 @@ mvn install
 
 ![](assets/image-20210726172709112.png){data-zoomable}
 
-#### 1.3.2 Maven 生命周期
+### 1.3.2 Maven 生命周期
 
 Maven 构建项目生命周期描述的是一次构建过程经历经历了多少个事件
 
@@ -262,7 +260,7 @@ Maven 对项目构建的生命周期划分为 3 套：
 
 ![](assets/image-20210726173153576.png){data-zoomable}
 
-当我们执行 `install`（安装）命令时，它会先执行 `compile`命令，再执行 `test ` 命令，再执行 `package` 命令，最后执行 `install` 命令。
+当我们执行 `install`（安装）命令时，它会先执行 `compile`命令，再执行 `test` 命令，再执行 `package` 命令，最后执行 `install` 命令。
 
 当我们执行 `package` （打包）命令时，它会先执行 `compile` 命令，再执行 `test` 命令，最后执行 `package` 命令。
 
@@ -270,11 +268,11 @@ Maven 对项目构建的生命周期划分为 3 套：
 
 ![](assets/image-20210726173619353.png){data-zoomable}
 
-### 1.4 IDEA 使用 Maven
+## 1.4 IDEA 使用 Maven
 
 以后开发中我们肯定会在高级开发工具中使用 Maven 管理项目，而我们常用的高级开发工具是 IDEA，所以接下来我们会讲解 Maven 在 IDEA 中的使用。
 
-#### 1.4.1 IDEA 配置 Maven 环境
+### 1.4.1 IDEA 配置 Maven 环境
 
 我们需要先在 IDEA 中配置 Maven 环境：
 
@@ -290,7 +288,7 @@ Maven 对项目构建的生命周期划分为 3 套：
 
   ![](assets/image-20210726174248050.png){data-zoomable}
 
-#### 1.4.2 Maven 坐标详解
+### 1.4.2 Maven 坐标详解
 
 **什么是坐标？**
 
@@ -312,7 +310,7 @@ Maven 对项目构建的生命周期划分为 3 套：
 > - 上面所说的资源可以是插件、依赖、当前项目。
 > - 我们的项目如果被其他的项目依赖时，也是需要坐标来引入的。
 
-#### 1.4.3 IDEA 创建 Maven 项目
+### 1.4.3 IDEA 创建 Maven 项目
 
 - 创建模块，选择 Maven，点击 Next
 
@@ -328,7 +326,7 @@ Maven 对项目构建的生命周期划分为 3 套：
 
 - 编写 HelloWorld，并运行
 
-#### 1.4.4 IDEA 导入 Maven 项目
+### 1.4.4 IDEA 导入 Maven 项目
 
 大家在学习时可能需要看老师的代码，当然也就需要将老师的代码导入到自己的 IDEA 中。我们可以通过以下步骤进行项目的导入：
 
@@ -370,9 +368,9 @@ Maven 对项目构建的生命周期划分为 3 套：
 
 ![](assets/image-20210726192430371.png){data-zoomable}
 
-### 1.5 依赖管理
+## 1.5 依赖管理
 
-#### 1.5.1 使用坐标引入 jar 包
+### 1.5.1 使用坐标引入 jar 包
 
 **使用坐标引入 jar 包的步骤：**
 
@@ -391,7 +389,7 @@ Maven 对项目构建的生命周期划分为 3 套：
 > 注意：
 >
 > - 具体的坐标我们可以到如下网站进行搜索
-> - https://mvnrepository.com/
+> - <https://mvnrepository.com/>
 
 **快捷方式导入 jar 包的坐标：**
 
@@ -423,7 +421,7 @@ Maven 对项目构建的生命周期划分为 3 套：
 
 - 选择 Any changes，点击 ok 即可生效
 
-#### 1.5.2 依赖范围
+### 1.5.2 依赖范围
 
 通过设置坐标的依赖范围(scope)，可以设置 对应 jar 包的作用范围：编译环境、测试环境、运行环境。
 
