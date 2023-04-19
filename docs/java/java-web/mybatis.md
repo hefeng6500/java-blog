@@ -1272,6 +1272,9 @@ public void testAdd() throws IOException {
     BrandMapper brandMapper = sqlSession.getMapper(BrandMapper.class);
     //4. 执行方法
     brandMapper.add(brand);
+
+    System.out.println(brand.getId());
+    
     //提交事务
     sqlSession.commit();
     //5. 释放资源
