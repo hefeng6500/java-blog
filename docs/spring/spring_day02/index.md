@@ -107,7 +107,7 @@ pom.xml 中添加依赖
             http://www.springframework.org/schema/beans
             http://www.springframework.org/schema/beans/spring-beans.xsd">
 	<!--管理DruidDataSource对象-->
-    <bean class="com.alibaba.druid.pool.DruidDataSource">
+    <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource">
         <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
         <property name="url" value="jdbc:mysql://localhost:3306/spring_db"/>
         <property name="username" value="root"/>
