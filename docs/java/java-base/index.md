@@ -108,24 +108,24 @@ public class Test {
 
 **附件**
 
-[00、课程总体介绍.pptx](/files/00、课程总体介绍.pptx)
+[00、课程总体介绍.pptx](/java-blog/files/00、课程总体介绍.pptx)
 
-[01、Java 基础入门.pptx](/files/01、Java 基础入门.pptx)
+[01、Java 基础入门.pptx](/java-blog/files/01、Java基础入门.pptx)
 
-[02、类型转换、常用运算符.pptx](/files/02、类型转换、常用运算符.pptx)
+[02、类型转换、常用运算符.pptx](/java-blog/files/02、类型转换、常用运算符.pptx)
 
-[03、流程控制.pptx](/files/03、流程控制.pptx)
+[03、流程控制.pptx](/java-blog/files/03、流程控制.pptx)
 
-[04、数组-副本.pptx](/files/04、数组-副本.pptx)
+[04、数组-副本.pptx](/java-blog/files/04、数组-副本.pptx)
 
-[05、方法.pptx](/files/05、方法.pptx)
+[05、方法.pptx](/java-blog/files/05、方法.pptx)
 
-[06、编程思维训练.pptx](/files/06、编程思维训练.pptx)
+[06、编程思维训练.pptx](/java-blog/files/06、编程思维训练.pptx)
 
-[07、面向对象基础.pptx](/files/07、面向对象基础.pptx)
+[07、面向对象基础.pptx](/java-blog/files/07、面向对象基础.pptx)
 
-[08、String、集合.pptx](/files/08、String、集合.pptx)
+[08、String、集合.pptx](/java-blog/files/08、String、集合.pptx)
 
-[09、黑马银行 ATM 系统.pptx](/files/09、黑马银行ATM系统.pptx)
+[09、黑马银行 ATM 系统.pptx](/java-blog/files/09、黑马银行ATM系统.pptx)
 
-[结课复习.pptx](/files/结课复习.pptx)
+[结课复习.pptx](/java-blog/files/结课复习.pptx)
