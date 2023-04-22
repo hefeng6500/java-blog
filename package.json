@@ -5,10 +5,11 @@
   "license": "MIT",
   "scripts": {
     "dev": "vitepress dev docs",
-    "build": "vitepress build docs",
+    "build": "cross-env NODE_OPTIONS=--max_old_space_size=1024000 vitepress build docs",
     "serve": "vitepress serve docs"
   },
   "devDependencies": {
+    "cross-env": "^7.0.3",
     "sass": "^1.57.1",
     "vitepress": "1.0.0-alpha.29",
     "vue": "^3.2.45"
