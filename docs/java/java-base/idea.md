@@ -16,7 +16,7 @@ IDEA 安装破解教程: https://www.exception.site/essay/idea-reset-eval
 | Ctrl + R                   | 替换该页面存在的字符串                 |
 | Ctrl + F                   | 查询该页面存在的字符串                 |
 | Ctrl + Shift + F           | 查询该项目存在的字符串                 |
-|                            |                                        |
+| Alt + Insert （pom.xml）   | 搜索查看依赖                           |
 |                            |                                        |
 |                            |                                        |
 
