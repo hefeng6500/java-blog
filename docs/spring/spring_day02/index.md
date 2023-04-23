@@ -698,6 +698,12 @@ public class AppForBeanFactory {
 }
 ```
 
+::: warning
+Cannot resolve symbol 'XmlBeanFactory' 错误通常是由于缺少 Spring Framework 的依赖所致。XmlBeanFactory 是 Spring Framework 3.x 版本中的一个类，从 Spring Framework 4.3 版本开始，官方已经不推荐使用 XmlBeanFactory 类，推荐使用 ApplicationContext 接口的实现类代替，如 ClassPathXmlApplicationContext、FileSystemXmlApplicationContext 等。
+
+如果您的项目中使用的是 Spring Framework 4.3 或更高版本，建议使用 ApplicationContext 接口的实现类来代替 XmlBeanFactory，
+:::
+
 为了更好的看出`BeanFactory`和`ApplicationContext`之间的区别，在 BookDaoImpl 添加如下构造函数:
 
 ```java
@@ -807,15 +813,19 @@ Spring 的 IOC/DI 对应的配置开发就已经讲解完成，但是使用起�
 
 - pom.xml 添加 Spring 的依赖
 
-  ```xml
-  <dependencies>
-      <dependency>
-          <groupId>org.springframework</groupId>
-          <artifactId>spring-context</artifactId>
-          <version>5.2.10.RELEASE</version>
-      </dependency>
-  </dependencies>
-  ```
+::: warning important
+注意我这里使用的是 spring-context 6.0.8 版本，匹配 JDK 20 版本可以用
+:::
+
+```xml
+<dependencies>
+    <dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-context</artifactId>
+        <version>6.0.8</version>
+    </dependency>
+</dependencies>
+```
 
 - resources 下添加 applicationContext.xml
 
@@ -903,14 +913,21 @@ XML 与注解配置的对应关系:
 
 为了让 Spring 框架能够扫描到写在类上的注解，需要在配置文件上进行包扫描
 
-```xml
+```xml{4,7,8,12}
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xsi:schemaLocation="
-            http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
-    <context:component-scan base-package="com.itheima"/>
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans.xsd
+           http://www.springframework.org/schema/context
+           http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <!-- <bean id="bookDao" class="com.example.dao.impl.BookDaoImpl"/> -->
+
+    <context:component-scan base-package="com.example"/>
 </beans>
+
 ```
 
 **说明:**
