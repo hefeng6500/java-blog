@@ -613,6 +613,16 @@ public class SpringConfig {
 }
 ```
 
+::: warning
+此处要注释掉 SpringMvcConfig 配置类的 @Configuration 注解，因为如下这么写相当于又把 controller 包下的类交给了 spring 去管理
+
+```java
+@Configuration
+@ComponentScan("com.example.controller")
+```
+
+:::
+
 - excludeFilters 属性：设置扫描加载 bean 时，排除的过滤规则
 
 - type 属性：设置排除规则，当前使用按照 bean 定义时的注解类型进行排除
