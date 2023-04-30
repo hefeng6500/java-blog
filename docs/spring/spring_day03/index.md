@@ -1514,7 +1514,7 @@ public class ProjectAdvice {
       }
 
       @Around("pt()")
-      public Object around() throws Throwable{
+      public Object around(ProceedingJoinPoint pjp) throws Throwable{
           Object ret = pjp.proceed();
           return ret;
       }
