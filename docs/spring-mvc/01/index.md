@@ -614,7 +614,7 @@ public class SpringConfig {
 ```
 
 ::: warning
-此处要注释掉 SpringMvcConfig 配置类的 @Configuration 注解，因为如下这么写相当于又把 controller 包下的类交给了 spring 去管理
+此处要注释掉 SpringMvcConfig 配置类的 @ComponentScan("com.example.controller") 注解，因为如下这么写相当于又把 controller 包下的类交给了 spring 去管理
 
 ```java
 @Configuration
