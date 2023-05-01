@@ -1287,7 +1287,7 @@ public String commonParamDifferentName(String userName , int age){
 ```java
 @RequestMapping("/commonParamDifferentName")
     @ResponseBody
-    public String commonParamDifferentName(@RequestPaam("name") String userName , int age){
+    public String commonParamDifferentName(@RequestParam("name") String userName , int age){
         System.out.println("普通参数传递 userName ==> "+userName);
         System.out.println("普通参数传递 age ==> "+age);
         return "{'module':'common param different name'}";
@@ -1646,7 +1646,7 @@ SpringMVC 接收 JSON 数据的实现步骤为:
 ```java
 @RequestMapping("/dataParam")
 @ResponseBody
-public String dataParam(Date date)
+public String dataParam(Date date){
     System.out.println("参数传递 date ==> "+date);
     return "{'module':'data param'}";
 }
