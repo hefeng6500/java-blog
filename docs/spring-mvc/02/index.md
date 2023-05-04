@@ -256,7 +256,7 @@ public class MyBatisConfig {
 
 ```
 jdbc.driver=com.mysql.jdbc.Driver
-jdbc.url=jdbc:mysql://localhost:3306/ssm_db
+jdbc.url=jdbc:mysql://localhost:3306/ssm_db?useSSL=false&useServerPrepStmts=true
 jdbc.username=root
 jdbc.password=root
 ```
