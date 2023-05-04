@@ -13,6 +13,7 @@ export default {
           { text: "常用 API", link: "/java/java-base/java-api" },
           { text: "学习案例", link: "/java/java-base/case" },
           { text: "IDEA", link: "/java/java-base/idea" },
+          { text: "必先利其器", link: "/java/java-base/skill" },
         ],
       },
       {
@@ -37,29 +38,29 @@ export default {
         items: [
           {
             text: "MySQL",
-            link: "/java/java-web/mysql"
+            link: "/java/java-web/mysql",
           },
           {
             text: "JDBC",
-            link: "/java/java-web/jdbc"
+            link: "/java/java-web/jdbc",
           },
           {
             text: "Maven",
-            link: "/java/java-web/maven"
+            link: "/java/java-web/maven",
           },
           {
             text: "MyBatis",
-            link: "/java/java-web/mybatis"
+            link: "/java/java-web/mybatis",
           },
           {
             text: "Servlet",
-            link: "/java/java-web/servlet"
+            link: "/java/java-web/servlet",
           },
           {
             text: "JSP",
-            link: "/java/java-web/jsp"
+            link: "/java/java-web/jsp",
           },
-        ]
+        ],
       },
       {
         text: "Spring",
