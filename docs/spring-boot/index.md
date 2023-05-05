@@ -1086,6 +1086,54 @@ spring:
       on-profile: dev
 ```
 
+:::warning
+spring Boot 3 中配置有变化，如下：
+
+```yaml
+lesson: SpringBoot
+spring:
+  profiles:
+    active: dev
+
+enterprise:
+  name: yang
+  age: 20
+  tel: 13866660000
+  subject:
+    - java
+    - javascript
+    - go
+
+---
+#开发
+server:
+  port: 8080
+spring:
+  config:
+    activate:
+      on-profile: dev
+---
+
+#测试环境
+server:
+  port: 81
+spring:
+  config:
+    activate:
+      on-profile: test
+---
+
+#生产环境
+server:
+  port: 82
+spring:
+  config:
+    activate:
+      on-profile: pro
+---
+```
+:::
+
 #### 2.4.2 properties 文件
 
 `properties` 类型的配置文件配置多环境需要定义不同的配置文件
