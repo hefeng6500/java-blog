@@ -26,7 +26,7 @@
 
 ![](assets/image-20210911133219847.png){data-zoomable}
 
-​ 做到这只是将工程的架子搭起来。要想被外界访问，最起码还需要提供一个 `Controller` 类，在该类中提供一个方法。
+做到这只是将工程的架子搭起来。要想被外界访问，最起码还需要提供一个 `Controller` 类，在该类中提供一个方法。
 
 4. **编写 `Controller` 类**
 
@@ -424,8 +424,6 @@ public class Springboot01QuickstartApplication {
     </exclusions>
 </dependency>
 ```
-
-
 
 现在我们运行引导类可以吗？运行一下试试，打印的日志信息如下
 
@@ -1113,7 +1111,6 @@ spring:
     activate:
       on-profile: dev
 ---
-
 #测试环境
 server:
   port: 81
@@ -1122,7 +1119,6 @@ spring:
     activate:
       on-profile: test
 ---
-
 #生产环境
 server:
   port: 82
@@ -1132,6 +1128,7 @@ spring:
       on-profile: pro
 ---
 ```
+
 :::
 
 #### 2.4.2 properties 文件
@@ -1661,3 +1658,86 @@ spring:
 静态资源需要放在 `resources` 下的 `static` 下，如下图所示
 
 ![](assets/image-20210917230702072.png){data-zoomable}
+
+## 6. Spring Boot 整合 Mybatis Plus
+
+::: warning
+案例基于 Java SDK 17
+:::
+
+```sql
+create database if not exists mybatisplus_db;
+
+use mybatisplus_db;
+
+create table user
+(
+    id       int,
+    name     varchar(32),
+    password varchar(32),
+    age      int,
+    tel      varchar(15)
+);
+```
+
+1. 创建 Maven Spring 工程
+2. 添加 maven 依赖
+
+```xml
+<dependency>
+  <groupId>com.baomidou</groupId>
+  <artifactId>mybatis-plus-boot-starter</artifactId>
+  <version>3.5.3.1</version>
+</dependency>
+<dependency>
+  <groupId>com.alibaba</groupId>
+  <artifactId>druid</artifactId>
+  <version>1.2.17</version>
+</dependency>
+```
+
+3. 定义 domain/User 实体类
+
+```java
+public class User {
+  private Long id;
+  private String name;
+  private String password;
+  private Integer age;
+  private String tel;
+
+  // get/set 省略
+}
+```
+
+4. dao 层定义如下：
+
+```java
+@Mapper
+public interface UserDao extends BaseMapper<User> {
+}
+```
+
+5. 测试类进行测试
+
+```java
+@SpringBootTest
+class SpringbootMybatisplusApplicationTests {
+
+  @Autowired
+  private UserDao userDao;
+
+  @Test
+  void contextLoads() {
+  }
+
+  @Test
+  void getAll() {
+    List<User> users = userDao.selectList(null);
+    System.out.println(users);
+  }
+
+}
+```
+
+![](./assets/images_20230506220251.png){data-zoomable}
