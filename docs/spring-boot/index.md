@@ -1661,22 +1661,26 @@ spring:
 
 ## 6. Spring Boot 整合 Mybatis Plus
 
+Mybatis Plus 官网：https://www.baomidou.com
+
 ::: warning
 案例基于 Java SDK 17
 :::
 
 ```sql
+drop database if exists mybatisplus_db;
 create database if not exists mybatisplus_db;
 
 use mybatisplus_db;
 
 create table user
 (
-    id       int,
-    name     varchar(32),
+    id BIGINT(20) NOT NULL COMMENT '主键ID',
+    name VARCHAR(30) NULL DEFAULT NULL COMMENT '姓名',
+    age INT(11) NULL DEFAULT NULL COMMENT '年龄',
     password varchar(32),
-    age      int,
-    tel      varchar(15)
+    tel      varchar(15),
+    PRIMARY KEY (id)
 );
 ```
 
