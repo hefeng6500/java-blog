@@ -1856,9 +1856,10 @@ public class User {
 }
 ```
 
-**分页功能开发**
+**1. 分页功能开发**
 
 创建 Mybatis Plus 配置类
+设置分页拦截器作为 Spring 管理的 Bean
 
 ```java
 package com.example.springbootmybatisplus.config;
@@ -1888,10 +1889,123 @@ public class MybatisPlusConfig {
     IPage iPage = new Page(1,2);
     userDao.selectPage(iPage, null);
 
-    System.out.println("当前页码： " + iPage.getCurrent());
+    System.out.println("当前页码：" + iPage.getCurrent());
     System.out.println("每页显示：" + iPage.getSize());
     System.out.println("一共多少页：" + iPage.getPages());
-    System.out.println("一共多少条" + iPage.getTotal());
-    System.out.println("本页：" + iPage.getRecords());
+    System.out.println("一共多少条：" + iPage.getTotal());
+    System.out.println("本页当前页数据：" + iPage.getRecords());
+  }
+```
+
+`application.yml` 添加日志查看配置
+
+```yaml
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+```
+
+![](./assets/images_20230507112504.png){data-zoomable}
+
+### DQL 编程控制
+
+**2. 条件查询**
+
+```java
+  /**
+   * 按条件查询
+   */
+  @Test
+  void testSelectByCondition(){
+
+    // 方式一： 按条件查询
+    QueryWrapper wrapper = new QueryWrapper<>();
+    wrapper.lt("age", 30);
+    List<User> userList = userDao.selectList(wrapper);
+    System.out.println(userList);
+
+    // 方式二： Lambda 格式查询 (优于方式一，没有魔鬼字符串 “age”)
+    QueryWrapper<User> wrapper = new QueryWrapper<User>();
+    wrapper.lambda().lt(User::getAge, 30);
+
+    List<User> userList = userDao.selectList(wrapper);
+
+    System.out.println(userList);
+
+
+    // 方式三： Lambda 格式查询
+    LambdaQueryWrapper<User> lambdaQueryWrapper = new LambdaQueryWrapper<User>();
+    lambdaQueryWrapper.lt(User::getAge, 30);
+
+    List<User> userList = userDao.selectList(lambdaQueryWrapper);
+
+    System.out.println(userList);
+  }
+```
+
+链式调用
+
+```java
+lambdaQueryWrapper.lt(User::getAge, 40).gt(User::getAge, 10);
+```
+
+```java
+lambdaQueryWrapper.lt(User::getAge, 20).or().gt(User::getAge, 25);
+```
+
+**null 值处理**
+
+创建查询实体类 UserQuery
+
+```java
+// domain/query/UserQuery.class
+@Data
+public class UserQuery extends User {
+  Integer age2;
+}
+```
+
+```java
+UserQuery userQuery = new UserQuery();
+userQuery.setAge2(30);
+userQuery.setAge(22);
+
+
+LambdaQueryWrapper<User> lambdaQueryWrapper = new LambdaQueryWrapper<User>();
+lambdaQueryWrapper.lt(null != userQuery.getAge2(), User::getAge, userQuery.getAge2())
+                  .gt(null != userQuery.getAge(), User::getAge, userQuery.getAge());
+```
+
+**查询投影**
+
+只查询部分列
+
+```java
+/**
+   * 查询投影
+   */
+  @Test
+  void testSelectByCondition1() {
+    LambdaQueryWrapper<User> lambdaQueryWrapper = new LambdaQueryWrapper<User>();
+    lambdaQueryWrapper.select(User::getId, User::getName);
+
+    List<User> userList = userDao.selectList(lambdaQueryWrapper);
+    System.out.println(userList);
+  }
+```
+
+```java
+  /**
+   * 查询投影
+   */
+  @Test
+  void testSelectByCondition2() {
+    QueryWrapper<User> queryWrapper = new QueryWrapper<User>();
+    // queryWrapper.select("age", "name");
+
+    queryWrapper.select("count(*) as nums, tel");
+    queryWrapper.groupBy("tel");
+    List<User> userList = userDao.selectList(queryWrapper);
+    System.out.println(userList);
   }
 ```
