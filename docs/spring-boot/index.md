@@ -1907,7 +1907,7 @@ mybatis-plus:
 
 ![](./assets/images_20230507112504.png){data-zoomable}
 
-### DQL 编程控制
+## DQL 编程控制
 
 **2. 条件查询**
 
@@ -2008,4 +2008,26 @@ lambdaQueryWrapper.lt(null != userQuery.getAge2(), User::getAge, userQuery.getAg
     List<User> userList = userDao.selectList(queryWrapper);
     System.out.println(userList);
   }
+```
+
+### 各种系列条件查询
+
+**eq**
+
+```java
+lambdaQueryWrapper.eq(User::getAge, "Jack Ma").eq(User::getPassword, "999");
+```
+
+**between**
+
+```java
+lambdaQueryWrapper.between(User::getAge, 10, 30);
+```
+
+**like**
+
+```java
+ lambdaQueryWrapper.like(User::getName, "o");
+ lambdaQueryWrapper.likeLeft(User::getName, "J"); // Parameters: %J(String)
+ lambdaQueryWrapper.likeRight(User::getName, "J"); // Parameters: J%(String)
 ```
