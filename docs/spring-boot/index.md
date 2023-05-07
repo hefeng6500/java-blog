@@ -1677,7 +1677,7 @@ use
 
 create table user
 (
-    id       BIGINT(20)  NOT NULL COMMENT '主键ID',
+    id       BIGINT(20) AUTO_INCREMENT NOT NULL COMMENT '主键ID',
     name     VARCHAR(30) NULL DEFAULT NULL COMMENT '姓名',
     age      INT(11)     NULL DEFAULT NULL COMMENT '年龄',
     password varchar(32),
@@ -1691,8 +1691,6 @@ VALUES (1, 'Jone', 18, 'test1@baomidou.com', '18100009999'),
        (3, 'Tom', 28, 'test3@baomidou.com', '18100009999'),
        (4, 'Sandy', 21, 'test4@baomidou.com', '18100009999'),
        (5, 'Billie', 24, 'test5@baomidou.com', '18100009999');
-
-
 ```
 
 1. 创建 Maven Spring 工程
@@ -2031,3 +2029,221 @@ lambdaQueryWrapper.between(User::getAge, 10, 30);
  lambdaQueryWrapper.likeLeft(User::getName, "J"); // Parameters: %J(String)
  lambdaQueryWrapper.likeRight(User::getName, "J"); // Parameters: J%(String)
 ```
+
+### 字段/表名映射
+
+- 表字段与编码属性设计不同步
+
+```java{5}
+@Data
+public class User {
+  private Long id;
+  private String name;
+  @TableField("pwd")
+  private String password;
+  private Integer age;
+  private String tel;
+}
+```
+
+- 编码中添加了数据库未定义的属性
+
+```java{9}
+@Data
+public class User {
+  private Long id;
+  private String name;
+  @TableField("pwd")
+  private String password;
+  private Integer age;
+  private String tel;
+  @TableField(exist = false)
+  private Integer online;
+}
+```
+
+- 采用默认查询开放了更多的字段查看权限
+
+```java{5}
+@Data
+public class User {
+  private Long id;
+  private String name;
+  @TableField(value = "pwd", select = false)
+  private String password;
+  private Integer age;
+  private String tel;
+  @TableField(exist = false)
+  private Integer online;
+}
+```
+
+- 表名与编码设计不同步
+
+```java{2}
+@Data
+@TableName("tbl_user")
+public class User {
+  private Long id;
+  private String name;
+  @TableField(value = "pwd", select = false)
+  private String password;
+  private Integer age;
+  private String tel;
+  @TableField(exist = false)
+  private Integer online;
+}
+```
+
+### 生成策略
+
+1. id 生成策略
+
+注解： @TableId
+
+- AUTO(0): 使用数据库 id 自增策略控制 id 生成
+- NONE(1): 不设置 id 生成策略
+- INPUT(2): 用户手工输入 id
+- ASSIGN ID(3): 雪花算法生成 id (可兼容数值型与字符串型)ASSIGN UUID(4): 以 UUID 生成算法作为 id 生成策略
+
+```java{3}
+@Data
+public class User {
+  @TableId(type = IdType.AUTO)
+  private Long id;
+}
+```
+
+使得每一个实体类的 id 都使用某一种 IdType，在 application.yaml 中配置
+
+```yaml
+mybatis-plus:
+  global-config:
+    db-config:
+      id-type: auto
+```
+
+同样的，如果每一张表的对应的实体类都要添加`@TableName("tbl_user")` 也可以使用全局配置代替
+
+```yaml
+mybatis-plus:
+  global-config:
+    db-config:
+      table-prefix: tbl_
+```
+
+2. 多数据删除
+
+```java
+@Test
+void testBatchDelete(){
+  List<Long> list = new ArrayList<>();
+  list.add(1655126609023942657L);
+  list.add(1655126609023942659L);
+
+  userDao.deleteBatchIds(list);
+}
+```
+
+3. 逻辑删除
+
+- 0: 没有删除
+- 1: 已删除
+
+```sql
+ALTER TABLE user ADD COLUMN is_deleted TINYINT(1) NOT NULL DEFAULT 0;
+```
+
+```java
+  @Test
+  void testLoginDelete(){
+    userDao.deleteById(3L);
+  }
+```
+
+User 实体类设置
+
+```java
+@TableField(value = "is_deleted")
+@TableLogic(value = "0", delval = "1") // 逻辑删除，
+private Integer deleted;
+```
+
+或者在全局设置
+
+```yaml
+mybatis-plus:
+  global-config:
+    db-config:
+      logic-delete-field: deleted
+      logic-delete-value: 1
+      logic-not-delete-value: 0
+```
+
+**一旦开启逻辑删除**
+
+- 所有删除语句都会变成 UPDATE
+- 如果要物理删除就要自己编写 SQL 语句去删除
+
+### 乐观锁
+
+原理：乐观锁是一种并发控制机制，通过**更新版本号**进行锁定导致别人无法直接修改,
+
+伪代码：
+
+`UPDATE user SET name=?, age=?, tel=?, version= version + 1 WHERE id=? AND version = 1`
+
+1. 添加 version 字段
+
+```sql
+ALTER TABLE user ADD COLUMN version int(11) NOT NULL DEFAULT 1;
+```
+
+2. MybatisPlus 配置类添加 MybatisPlusConfig 拦截器
+
+```java{10}
+@Configuration
+public class MybatisPlusConfig {
+  @Bean
+  public MybatisPlusInterceptor mybatisPlusInterceptor() {
+    // 1. 添加 Mybatis Plus 拦截器
+    MybatisPlusInterceptor mybatisPlusInterceptor = new MybatisPlusInterceptor();
+    // 2. 添加具体的拦截器
+    mybatisPlusInterceptor.addInnerInterceptor(new PaginationInnerInterceptor());
+    // 3. 添加乐观锁拦截器
+    mybatisPlusInterceptor.addInnerInterceptor((new OptimisticLockerInnerInterceptor()));
+
+    return mybatisPlusInterceptor;
+  }
+}
+```
+
+3. 测试
+
+```java
+  @Test
+  void testUpdate2(){
+    User user = new User();
+    user.setId(3L);
+    user.setName("Tom999");
+    user.setVersion(1);
+    userDao.updateById(user);
+  }
+```
+
+![](./assets/images_20230507173001.png){data-zoomable}
+
+4. 一般在企业业务中 version 数据肯定不可能写死在代码中，而是先查出数据
+
+```java
+  @Test
+  void testUpdate2(){
+    // 1. 先通过要修改的数据 id 将当前数据查询出来
+    User user = userDao.selectById(3L);
+    // 2. 将要修改的属性逐一设置进去
+    user.setName("Tom111");
+    userDao.updateById(user);
+  }
+```
+
+![](./assets/images_20230507173403.png){data-zoomable}
