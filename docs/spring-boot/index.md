@@ -1905,7 +1905,7 @@ mybatis-plus:
 
 ![](./assets/images_20230507112504.png){data-zoomable}
 
-## DQL 编程控制
+## 8. DQL 编程控制
 
 **2. 条件查询**
 
@@ -2247,3 +2247,114 @@ public class MybatisPlusConfig {
 ```
 
 ![](./assets/images_20230507173403.png){data-zoomable}
+
+## 9. 代码生成器
+
+1. 添加依赖
+
+```xml
+<!-- 代码生成器 -->
+<dependency>
+    <groupId>com.baomidou</groupId>
+    <artifactId>mybatis-plus-generator</artifactId>
+    <version>3.3.0</version>
+</dependency>
+
+<!-- velocity 模板引擎  -->
+<dependency>
+    <groupId>org.apache.velocity</groupId>
+    <artifactId>velocity-engine-core</artifactId>
+    <version>2.3</version>
+</dependency>
+```
+
+2. 添加数据库和表
+
+```sql
+drop database if exists mybatisplus_db2;
+create
+    database if not exists mybatisplus_db2;
+
+use
+    mybatisplus_db2;
+
+create table tbl_user
+(
+    id       BIGINT(20) AUTO_INCREMENT NOT NULL COMMENT '主键ID',
+    name     VARCHAR(30) NULL DEFAULT NULL COMMENT '姓名',
+    age      INT(11)     NULL DEFAULT NULL COMMENT '年龄',
+    password varchar(32),
+    tel      varchar(15),
+    PRIMARY KEY (id)
+);
+
+INSERT INTO tbl_user (id, name, age, password, tel)
+VALUES (1, 'Jone', 18, 'test1@baomidou.com', '18100009999'),
+       (2, 'Jack', 20, 'test2@baomidou.com', '18100009999'),
+       (3, 'Tom', 28, 'test3@baomidou.com', '18100009999'),
+       (4, 'Sandy', 21, 'test4@baomidou.com', '18100009999'),
+       (5, 'Billie', 24, 'test5@baomidou.com', '18100009999');
+
+```
+
+3. 添加代码生成器配置
+
+```java
+package com.example.mybatisplusgenerate;
+
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.generator.AutoGenerator;
+import com.baomidou.mybatisplus.generator.config.DataSourceConfig;
+import com.baomidou.mybatisplus.generator.config.GlobalConfig;
+import com.baomidou.mybatisplus.generator.config.PackageConfig;
+import com.baomidou.mybatisplus.generator.config.StrategyConfig;
+public class CodeGenerator {
+  public static void main(String[] args) {
+
+    //1.获取代码生成器的对象
+    AutoGenerator autoGenerator = new AutoGenerator();
+
+    //设置数据库相关配置
+    DataSourceConfig dataSource = new DataSourceConfig();
+    dataSource.setDriverName("com.mysql.cj.jdbc.Driver");
+    dataSource.setUrl("jdbc:mysql://localhost:3306/mybatisplus_db2?serverTimezone=UTC");
+    dataSource.setUsername("root");
+    dataSource.setPassword("123456");
+    autoGenerator.setDataSource(dataSource);
+
+    //设置全局配置
+    GlobalConfig globalConfig = new GlobalConfig();
+    globalConfig.setOutputDir(System.getProperty("user.dir")+"/mybatis-plus-generate/src/main/java");    //设置代码生成位置
+    globalConfig.setOpen(false);    //设置生成完毕后是否打开生成代码所在的目录
+    globalConfig.setAuthor("hefeng6500");    //设置作者
+    globalConfig.setFileOverride(true);     //设置是否覆盖原始生成的文件
+    globalConfig.setMapperName("%sDao");    //设置数据层接口名，%s为占位符，指代模块名称
+    globalConfig.setIdType(IdType.ASSIGN_ID);   //设置Id生成策略
+    autoGenerator.setGlobalConfig(globalConfig);
+
+    //设置包名相关配置
+    PackageConfig packageInfo = new PackageConfig();
+    packageInfo.setParent("com.yang");   //设置生成的包名，与代码所在位置不冲突，二者叠加组成完整路径
+    packageInfo.setEntity("domain");    //设置实体类包名
+    packageInfo.setMapper("dao");   //设置数据层包名
+    autoGenerator.setPackageInfo(packageInfo);
+
+    //策略设置
+    StrategyConfig strategyConfig = new StrategyConfig();
+    strategyConfig.setInclude("tbl_user");  //设置当前参与生成的表名，参数为可变参数
+    strategyConfig.setTablePrefix("tbl_");  //设置数据库表的前缀名称，模块名 = 数据库表名 - 前缀名  例如： User = tbl_user - tbl_
+    strategyConfig.setRestControllerStyle(true);    //设置是否启用Rest风格
+    strategyConfig.setVersionFieldName("version");  //设置乐观锁字段名
+    strategyConfig.setLogicDeleteFieldName("deleted");  //设置逻辑删除字段名
+    strategyConfig.setEntityLombokModel(true);  //设置是否启用lombok
+    autoGenerator.setStrategy(strategyConfig);
+    //2.执行生成操作
+    autoGenerator.execute();
+  }
+}
+
+```
+
+4. 直接运行 `CodeGenerator` main 函数就可以生成对应文件夹了
+
+![](./assets/images_20230507193352.png){data-zoomable}
