@@ -1669,19 +1669,30 @@ Mybatis Plus 官网：https://www.baomidou.com
 
 ```sql
 drop database if exists mybatisplus_db;
-create database if not exists mybatisplus_db;
+create
+    database if not exists mybatisplus_db;
 
-use mybatisplus_db;
+use
+    mybatisplus_db;
 
 create table user
 (
-    id BIGINT(20) NOT NULL COMMENT '主键ID',
-    name VARCHAR(30) NULL DEFAULT NULL COMMENT '姓名',
-    age INT(11) NULL DEFAULT NULL COMMENT '年龄',
+    id       BIGINT(20)  NOT NULL COMMENT '主键ID',
+    name     VARCHAR(30) NULL DEFAULT NULL COMMENT '姓名',
+    age      INT(11)     NULL DEFAULT NULL COMMENT '年龄',
     password varchar(32),
     tel      varchar(15),
     PRIMARY KEY (id)
 );
+
+INSERT INTO user (id, name, age, password, tel)
+VALUES (1, 'Jone', 18, 'test1@baomidou.com', '18100009999'),
+       (2, 'Jack', 20, 'test2@baomidou.com', '18100009999'),
+       (3, 'Tom', 28, 'test3@baomidou.com', '18100009999'),
+       (4, 'Sandy', 21, 'test4@baomidou.com', '18100009999'),
+       (5, 'Billie', 24, 'test5@baomidou.com', '18100009999');
+
+
 ```
 
 1. 创建 Maven Spring 工程
@@ -1745,3 +1756,142 @@ class SpringbootMybatisplusApplicationTests {
 ```
 
 ![](./assets/images_20230506220251.png){data-zoomable}
+
+## 7. Mabatis Plus 集成 LomBok
+
+添加 maven 依赖
+
+```xml
+<dependency>
+  <groupId>org.projectlombok</groupId>
+  <artifactId>lombok</artifactId>
+  <version>1.18.26</version>
+  <scope>provided</scope>
+</dependency>
+```
+
+简化实体类的编写
+
+没有使用 lombok 之前的写法
+
+```java
+public class User {
+  private Long id;
+  private String name;
+  private String password;
+  private Integer age;
+  private String tel;
+
+  public Long getId() {
+    return id;
+  }
+
+  public String getName() {
+    return name;
+  }
+
+  public String getPassword() {
+    return password;
+  }
+
+  public Integer getAge() {
+    return age;
+  }
+
+  public String getTel() {
+    return tel;
+  }
+
+  public void setId(Long id) {
+    this.id = id;
+  }
+
+  public void setName(String name) {
+    this.name = name;
+  }
+
+  public void setPassword(String password) {
+    this.password = password;
+  }
+
+  public void setAge(Integer age) {
+    this.age = age;
+  }
+
+  public void setTel(String tel) {
+    this.tel = tel;
+  }
+
+  @Override
+  public String toString() {
+    return "User{" +
+            "id=" + id +
+            ", name='" + name + '\'' +
+            ", password='" + password + '\'' +
+            ", age=" + age +
+            ", tel='" + tel + '\'' +
+            '}';
+  }
+}
+```
+
+看看简化后的
+
+```java
+import lombok.*;
+
+// @Setter
+// @Getter
+// @ToString
+// @NoArgsConstructor
+// @AllArgsConstructor
+// @EqualsAndHashCode
+@Data // @Data 更加简化
+public class User {
+  private Long id;
+  private String name;
+  private String password;
+  private Integer age;
+  private String tel;
+}
+```
+
+**分页功能开发**
+
+创建 Mybatis Plus 配置类
+
+```java
+package com.example.springbootmybatisplus.config;
+
+import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
+import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerInterceptor;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+@Configuration
+public class MybatisPlusConfig {
+  @Bean
+  public MybatisPlusInterceptor mybatisPlusInterceptor() {
+    // 1. 添加 Mybatis Plus 拦截器
+    MybatisPlusInterceptor mybatisPlusInterceptor = new MybatisPlusInterceptor();
+    // 2. 添加具体的拦截器
+    mybatisPlusInterceptor.addInnerInterceptor(new PaginationInnerInterceptor());
+
+    return mybatisPlusInterceptor;
+  }
+}
+```
+
+```java
+  @Test
+  void testGetByPage() {
+    IPage iPage = new Page(1,2);
+    userDao.selectPage(iPage, null);
+
+    System.out.println("当前页码： " + iPage.getCurrent());
+    System.out.println("每页显示：" + iPage.getSize());
+    System.out.println("一共多少页：" + iPage.getPages());
+    System.out.println("一共多少条" + iPage.getTotal());
+    System.out.println("本页：" + iPage.getRecords());
+  }
+```
