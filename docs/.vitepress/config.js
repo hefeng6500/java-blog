@@ -97,7 +97,20 @@ export default {
               },
             ],
           },
-          { text: "Spring Boot", link: "/spring-boot/" },
+          {
+            text: "Spring Boot",
+            link: "/spring-boot/",
+          },
+          {
+            text: "Spring 原理解读",
+            link: "/spring-source-analysis/",
+            items: [
+              {
+                text: "容器接口",
+                link: "/spring-source-analysis/container-interface",
+              },
+            ],
+          },
         ],
       },
       {
