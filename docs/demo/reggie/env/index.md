@@ -18,6 +18,8 @@
 
 运行如下 sql 脚本
 
+::: details
+
 ```sql
 /*
 Navicat MySQL Data Transfer
@@ -640,6 +642,8 @@ CREATE TABLE `user`
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='用户信息';
 
 ```
+
+:::
 
 直接导入 sql 脚本
 
