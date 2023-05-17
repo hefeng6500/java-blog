@@ -737,8 +737,18 @@ source D://mysql/db_reggie.sql
             <version>1.1.23</version>
         </dependency>
 
+        <!--阿里云短信服务-->
+        <dependency>
+            <groupId>com.aliyun</groupId>
+            <artifactId>aliyun-java-sdk-core</artifactId>
+            <version>4.5.16</version>
+        </dependency>
+        <dependency>
+            <groupId>com.aliyun</groupId>
+            <artifactId>aliyun-java-sdk-dysmsapi</artifactId>
+            <version>2.1.0</version>
+        </dependency>
     </dependencies>
-
     <build>
         <plugins>
             <plugin>
@@ -748,18 +758,17 @@ source D://mysql/db_reggie.sql
             </plugin>
         </plugins>
     </build>
-
 </project>
 ```
 
 3. 创建 Spring Boot 配置文件 application.yml
 
-```
+```yaml
 server:
   port: 8080
 spring:
   application:
-    #    应用的名称，可选
+    # 应用的名称，可选
     name: reggie_take_out
   datasource:
     druid:
@@ -775,6 +784,9 @@ mybatis-plus:
   global-config:
     db-config:
       id-type: ASSIGN_ID
+
+reggie:
+  path: D:\reggie_img\
 ```
 
 4. 编写启动类
@@ -829,6 +841,173 @@ public class WebMvcConfig extends WebMvcConfigurationSupport {
         registry.addResourceHandler("/backend/**").addResourceLocations("classpath:/backend/");
         registry.addResourceHandler("/front/**").addResourceLocations("classpath:/front/");
     }
+}
+
+```
+
+## 全局配置
+
+### 1. Response 接口返回工具类封装
+
+```java
+package com.yang.reggie.common;
+
+import lombok.Data;
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * 通用返回结果，服务端响应的数据最终都会封装成此对象
+ * @param <T>
+ */
+@Data
+public class R<T> {
+
+    private Integer code; //编码：1成功，0和其它数字为失败
+
+    private String msg; //错误信息
+
+    private T data; //数据
+
+    private Map map = new HashMap(); //动态数据
+
+    public static <T> R<T> success(T object) {
+        R<T> r = new R<T>();
+        r.data = object;
+        r.code = 1;
+        return r;
+    }
+
+    public static <T> R<T> error(String msg) {
+        R r = new R();
+        r.msg = msg;
+        r.code = 0;
+        return r;
+    }
+
+    public R<T> add(String key, Object value) {
+        this.map.put(key, value);
+        return this;
+    }
+
+}
+```
+
+### 2. 全部异常处理封装
+
+```java
+package com.yang.reggie.common;
+
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.sql.SQLIntegrityConstraintViolationException;
+
+/**
+ * 全局异常处理
+ */
+@ControllerAdvice(annotations = {RestController.class, Controller.class})
+@ResponseBody
+@Slf4j
+public class GlobalExceptionHandler {
+
+  /**
+   * 异常处理方法
+   * @return
+   */
+  @ExceptionHandler(SQLIntegrityConstraintViolationException.class)
+  public R<String> exceptionHandler(SQLIntegrityConstraintViolationException ex){
+    log.error(ex.getMessage());
+
+    if(ex.getMessage().contains("Duplicate entry")){
+      String[] split = ex.getMessage().split(" ");
+      String msg = split[2] + "已存在";
+      return R.error(msg);
+    }
+
+    return R.error("未知错误");
+  }
+}
+
+
+```
+
+### 3. 对象映射器封装
+
+```java
+package com.yang.reggie.common;
+
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.module.SimpleModule;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalTimeDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalTimeSerializer;
+
+import java.math.BigInteger;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+
+/**
+ * 对象映射器:基于jackson将Java对象转为json，或者将json转为Java对象
+ * 将JSON解析为Java对象的过程称为 [从JSON反序列化Java对象]
+ * 从Java对象生成JSON的过程称为 [序列化Java对象到JSON]
+ */
+public class JacksonObjectMapper extends ObjectMapper {
+
+  public static final String DEFAULT_DATE_FORMAT = "yyyy-MM-dd";
+  public static final String DEFAULT_DATE_TIME_FORMAT = "yyyy-MM-dd HH:mm:ss";
+  public static final String DEFAULT_TIME_FORMAT = "HH:mm:ss";
+
+  public JacksonObjectMapper() {
+    super();
+    //收到未知属性时不报异常
+    this.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+
+    //反序列化时，属性不存在的兼容处理
+    this.getDeserializationConfig().withoutFeatures(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+
+
+    SimpleModule simpleModule = new SimpleModule()
+            .addDeserializer(LocalDateTime.class, new LocalDateTimeDeserializer(DateTimeFormatter.ofPattern(DEFAULT_DATE_TIME_FORMAT)))
+            .addDeserializer(LocalDate.class, new LocalDateDeserializer(DateTimeFormatter.ofPattern(DEFAULT_DATE_FORMAT)))
+            .addDeserializer(LocalTime.class, new LocalTimeDeserializer(DateTimeFormatter.ofPattern(DEFAULT_TIME_FORMAT)))
+
+            .addSerializer(BigInteger.class, ToStringSerializer.instance)
+            .addSerializer(Long.class, ToStringSerializer.instance) // 将long型的数据转换成string类型
+            .addSerializer(LocalDateTime.class, new LocalDateTimeSerializer(DateTimeFormatter.ofPattern(DEFAULT_DATE_TIME_FORMAT))) // 将时间转化为字符串
+            .addSerializer(LocalDate.class, new LocalDateSerializer(DateTimeFormatter.ofPattern(DEFAULT_DATE_FORMAT)))
+            .addSerializer(LocalTime.class, new LocalTimeSerializer(DateTimeFormatter.ofPattern(DEFAULT_TIME_FORMAT)));
+
+    //注册功能模块 例如，可以添加自定义序列化器和反序列化器
+    this.registerModule(simpleModule);
+  }
+}
+
+```
+
+### 4. 自定义业务异常类
+
+```java
+package com.yang.reggie.common;
+
+/**
+ * 自定义业务异常类
+ */
+public class CustomException extends RuntimeException {
+  public CustomException(String message){
+    super(message);
+  }
 }
 
 ```
