@@ -121,6 +121,10 @@ export default {
             link: "/demo/reggie/",
             items: [
               {
+                text: "项目介绍",
+                link: "/demo/reggie/introduce",
+              },
+              {
                 text: "环境搭建",
                 link: "/demo/reggie/env/",
               },
@@ -138,7 +142,7 @@ export default {
               },
               {
                 text: "菜品管理功能开发",
-                link: "/demo/reggie/category/",
+                link: "/demo/reggie/dishes/",
               },
               {
                 text: "订单明细功能开发",
