@@ -111,7 +111,30 @@ export default {
               },
             ],
           },
+          {
+            text: "Spring Cloud",
+            link: "/spring-cloud/",
+            items: [
+              {
+                text: "day01",
+                link: "/spring-cloud/spring_day01",
+              },
+              {
+                text: "day02",
+                link: "/spring-cloud/spring_day02",
+              },
+            ]
+          }
         ],
+      },
+      {
+        text: "运维部署",
+        items: [
+          {
+            text: "Docker",
+            link: "/docker/",
+          }
+        ]
       },
       {
         text: "项目实战",
@@ -162,4 +185,5 @@ export default {
       buttonText: "Search",
     },
   },
+  ignoreDeadLinks: true
 };
