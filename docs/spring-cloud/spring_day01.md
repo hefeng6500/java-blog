@@ -198,7 +198,7 @@ cloud-order 表中持有 cloud-user 表中的 id 字段。
 
 ![image-20210713213312278](assets/image-20210713213312278.png){data-zoomable}
 
-因此，我们需要在 order-service 中 向 user-service 发起一个 http 的请求，调用 http://localhost:8081/user/{userId}这个接口。
+因此，我们需要在 order-service 中 向 user-service 发起一个 http 的请求，调用 `http://localhost:8081/user/{userId}` 这个接口。
 
 大概的步骤是这样的：
 

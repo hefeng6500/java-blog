@@ -230,11 +230,11 @@ public class UserController {
 
 启动 UserApplication 和 UserApplication2
 
-访问 http://localhost:8081/user/prop，结果：
+访问 `http://localhost:8081/user/prop`，结果：
 
 ![image-20210714174313344](assets/image-20210714174313344.png){data-zoomable}
 
-访问 http://localhost:8082/user/prop，结果：
+访问 `http://localhost:8082/user/prop`，结果：
 
 ![image-20210714174424818](assets/image-20210714174424818.png){data-zoomable}
 
