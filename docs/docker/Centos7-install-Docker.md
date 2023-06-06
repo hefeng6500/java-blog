@@ -111,8 +111,6 @@ curl -L https://github.com/docker/compose/releases/download/1.23.1/docker-compos
 
 如果下载速度较慢，或者下载失败，可以使用课前资料提供的 docker-compose 文件：
 
-![image-20210417133020614](assets/image-20210417133020614.png)
-
 上传到`/usr/local/bin/`目录也可以。
 
 ## 2.2.修改文件权限
