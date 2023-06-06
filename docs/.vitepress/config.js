@@ -123,8 +123,17 @@ export default {
                 text: "day02",
                 link: "/spring-cloud/spring_day02",
               },
-            ]
-          }
+            ],
+          },
+        ],
+      },
+      {
+        text: "微服务进阶",
+        items: [
+          {
+            text: "MQ",
+            link: "/mq/RabbitMQ",
+          },
         ],
       },
       {
@@ -133,8 +142,8 @@ export default {
           {
             text: "Docker",
             link: "/docker/",
-          }
-        ]
+          },
+        ],
       },
       {
         text: "项目实战",
@@ -185,5 +194,5 @@ export default {
       buttonText: "Search",
     },
   },
-  ignoreDeadLinks: true
+  ignoreDeadLinks: true,
 };
