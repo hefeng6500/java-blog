@@ -128,6 +128,15 @@ export default {
         ],
       },
       {
+        text: "运维部署",
+        items: [
+          {
+            text: "Docker",
+            link: "/docker/",
+          }
+        ]
+      },
+      {
         text: "项目实战",
         items: [
           {
