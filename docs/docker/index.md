@@ -934,7 +934,7 @@ docker-compose up -d
 
 ## 5.1.搭建私有镜像仓库
 
-参考课前资料《CentOS7 安装 Docker.md》
+参考课前资料《CentOS7 安装 [Docker.md](./Centos7-install-Docker)》
 
 ## 5.2.推送、拉取镜像
 
