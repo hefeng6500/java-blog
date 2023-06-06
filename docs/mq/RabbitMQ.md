@@ -102,6 +102,8 @@ MQ，中文是消息队列（MessageQueue），字面来看就是存放消息的
 
 安装 RabbitMQ，参考课前资料：
 
+[安装 RabbitMQ](./RabbitMQ-install.md)
+
 ![image-20210717162628635](assets/image-20210717162628635.png){data-zoomable}
 
 MQ 的基本结构：
