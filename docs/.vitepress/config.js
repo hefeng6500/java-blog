@@ -134,6 +134,21 @@ export default {
             text: "MQ",
             link: "/mq/RabbitMQ",
           },
+          {
+            text: "ElasticSearch",
+            items: [
+              {
+                text: "ElasticSearch01",
+                link: "/ElasticSearch/ElasticSearch01",
+              }, {
+                text: "ElasticSearch02",
+                link: "/ElasticSearch/ElasticSearch02",
+              }, {
+                text: "ElasticSearch03",
+                link: "/ElasticSearch/ElasticSearch03",
+              }
+            ]
+          }
         ],
       },
       {
