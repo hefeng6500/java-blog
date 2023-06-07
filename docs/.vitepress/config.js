@@ -134,6 +134,20 @@ export default {
             text: "MQ",
             link: "/mq/RabbitMQ",
           },
+          { text: "微服务保护", link: "/distributed/protection" },
+          { text: "分布式事务", link: "/distributed/transaction" },
+          { text: "分布式缓存", link: "/distributed/cache" },
+          { text: "多级缓存", link: "/distributed/multi-level-cache" },
+          { text: "MQ高级", link: "/distributed/MQ-advanced" },
+          { text: "常见面试题", link: "/distributed/interview/" },
+          {
+            text: "Nacos源码分析",
+            link: "/distributed/analysis/Nacos源码分析",
+          },
+          {
+            text: "Sentinel源码分析",
+            link: "/distributed/analysis/Sentinel源码分析",
+          },
         ],
       },
       {
