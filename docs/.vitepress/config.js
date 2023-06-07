@@ -134,6 +134,23 @@ export default {
             text: "MQ",
             link: "/mq/RabbitMQ",
           },
+          {
+            text: "ElasticSearch",
+            items: [
+              {
+                text: "ElasticSearch01",
+                link: "/ElasticSearch/ElasticSearch01",
+              },
+              {
+                text: "ElasticSearch02",
+                link: "/ElasticSearch/ElasticSearch02",
+              },
+              {
+                text: "ElasticSearch03",
+                link: "/ElasticSearch/ElasticSearch03",
+              },
+            ],
+          },
           { text: "微服务保护", link: "/distributed/protection" },
           { text: "分布式事务", link: "/distributed/transaction" },
           { text: "分布式缓存", link: "/distributed/cache" },
