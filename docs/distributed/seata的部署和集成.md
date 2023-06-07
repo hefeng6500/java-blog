@@ -1,36 +1,30 @@
-# seata的部署和集成
+# seata 的部署和集成
 
-
-
-# 一、部署Seata的tc-server
-
-
+# 一、部署 Seata 的 tc-server
 
 ## 1.下载
 
-首先我们要下载seata-server包，地址在[http](http://seata.io/zh-cn/blog/download.html)[://seata.io/zh-cn/blog/download](http://seata.io/zh-cn/blog/download.html)[.](http://seata.io/zh-cn/blog/download.html)[html](http://seata.io/zh-cn/blog/download.html) 
+首先我们要下载 seata-server 包，地址在[http](http://seata.io/zh-cn/blog/download.html)[://seata.io/zh-cn/blog/download](http://seata.io/zh-cn/blog/download.html)[.](http://seata.io/zh-cn/blog/download.html)[html](http://seata.io/zh-cn/blog/download.html)
 
 当然，课前资料也准备好了：
 
 ![image-20210622202357640](assets/image-20210622202357640.png)
 
-
-
 ## 2.解压
 
-在非中文目录解压缩这个zip包，其目录结构如下：
+在非中文目录解压缩这个 zip 包，其目录结构如下：
 
 ![image-20210622202515014](assets/image-20210622202515014.png)
 
 ## 3.修改配置
 
-修改conf目录下的registry.conf文件：
+修改 conf 目录下的 registry.conf 文件：
 
 ![image-20210622202622874](assets/image-20210622202622874.png)
 
 内容如下：
 
-```properties
+```
 registry {
   # tc服务的注册中心类，这里选择nacos，也可以是eureka、zookeeper等
   type = "nacos"
@@ -62,23 +56,17 @@ config {
 }
 ```
 
+## 4.在 nacos 添加配置
 
-
-
-
-## 4.在nacos添加配置
-
-特别注意，为了让tc服务的集群可以共享配置，我们选择了nacos作为统一配置中心。因此服务端配置文件seataServer.properties文件需要在nacos中配好。
+特别注意，为了让 tc 服务的集群可以共享配置，我们选择了 nacos 作为统一配置中心。因此服务端配置文件 seataServer.properties 文件需要在 nacos 中配好。
 
 格式如下：
 
 ![image-20210622203609227](assets/image-20210622203609227.png)
 
-
-
 配置内容如下：
 
-```properties
+```
 # 数据存储方式，db代表数据库
 store.mode=db
 store.db.datasource=druid
@@ -115,17 +103,13 @@ metrics.exporterList=prometheus
 metrics.exporterPrometheusPort=9898
 ```
 
-
-
 ==其中的数据库地址、用户名、密码都需要修改成你自己的数据库信息。==
-
-
 
 ## 5.创建数据库表
 
-特别注意：tc服务在管理分布式事务时，需要记录事务相关数据到数据库中，你需要提前创建好这些表。
+特别注意：tc 服务在管理分布式事务时，需要记录事务相关数据到数据库中，你需要提前创建好这些表。
 
-新建一个名为seata的数据库，运行课前资料提供的sql文件：
+新建一个名为 seata 的数据库，运行课前资料提供的 sql 文件：
 
 ![image-20210622204145159](assets/image-20210622204145159.png)
 
@@ -180,33 +164,23 @@ CREATE TABLE `global_table`  (
 SET FOREIGN_KEY_CHECKS = 1;
 ```
 
+## 6.启动 TC 服务
 
-
-## 6.启动TC服务
-
-进入bin目录，运行其中的seata-server.bat即可：
+进入 bin 目录，运行其中的 seata-server.bat 即可：
 
 ![image-20210622205427318](assets/image-20210622205427318.png)
 
-启动成功后，seata-server应该已经注册到nacos注册中心了。
+启动成功后，seata-server 应该已经注册到 nacos 注册中心了。
 
-
-
-打开浏览器，访问nacos地址：http://localhost:8848，然后进入服务列表页面，可以看到seata-tc-server的信息：
+打开浏览器，访问 nacos 地址：http://localhost:8848，然后进入服务列表页面，可以看到 seata-tc-server 的信息：
 
 ![image-20210622205901450](assets/image-20210622205901450.png)
 
-
-
-
-
-
-
-# 二、微服务集成seata
+# 二、微服务集成 seata
 
 ## 1.引入依赖
 
-首先，我们需要在微服务中引入seata依赖：
+首先，我们需要在微服务中引入 seata 依赖：
 
 ```xml
 <dependency>
@@ -228,11 +202,9 @@ SET FOREIGN_KEY_CHECKS = 1;
 </dependency>
 ```
 
-
-
 ## 2.修改配置文件
 
-需要修改application.yml文件，添加一些配置：
+需要修改 application.yml 文件，添加一些配置：
 
 ```yaml
 seata:
@@ -251,24 +223,22 @@ seata:
       seata-demo: SH
 ```
 
+# 三、TC 服务的高可用和异地容灾
 
+## 1.模拟异地容灾的 TC 集群
 
-# 三、TC服务的高可用和异地容灾
+计划启动两台 seata 的 tc 服务节点：
 
-## 1.模拟异地容灾的TC集群
-
-计划启动两台seata的tc服务节点：
-
-| 节点名称 | ip地址    | 端口号 | 集群名称 |
+| 节点名称 | ip 地址   | 端口号 | 集群名称 |
 | -------- | --------- | ------ | -------- |
 | seata    | 127.0.0.1 | 8091   | SH       |
 | seata2   | 127.0.0.1 | 8092   | HZ       |
 
-之前我们已经启动了一台seata服务，端口是8091，集群名为SH。
+之前我们已经启动了一台 seata 服务，端口是 8091，集群名为 SH。
 
-现在，将seata目录复制一份，起名为seata2
+现在，将 seata 目录复制一份，起名为 seata2
 
-修改seata2/conf/registry.conf内容如下：
+修改 seata2/conf/registry.conf 内容如下：
 
 ```nginx
 registry {
@@ -302,17 +272,13 @@ config {
 }
 ```
 
-
-
-进入seata2/bin目录，然后运行命令：
+进入 seata2/bin 目录，然后运行命令：
 
 ```powershell
 seata-server.bat -p 8092
 ```
 
-
-
-打开nacos控制台，查看服务列表：
+打开 nacos 控制台，查看服务列表：
 
 ![image-20210624151150840](assets/image-20210624151150840.png)
 
@@ -320,11 +286,9 @@ seata-server.bat -p 8092
 
 ![image-20210624151221747](assets/image-20210624151221747.png)
 
+## 2.将事务组映射配置到 nacos
 
-
-## 2.将事务组映射配置到nacos
-
-接下来，我们需要将tx-service-group与cluster的映射关系都配置到nacos配置中心。
+接下来，我们需要将 tx-service-group 与 cluster 的映射关系都配置到 nacos 配置中心。
 
 新建一个配置：
 
@@ -332,7 +296,7 @@ seata-server.bat -p 8092
 
 配置的内容如下：
 
-```properties
+```
 # 事务组映射关系
 service.vgroupMapping.seata-demo=SH
 
@@ -383,9 +347,9 @@ client.undo.compress.threshold=64k
 client.log.exceptionRate=100
 ```
 
-## 3.微服务读取nacos配置
+## 3.微服务读取 nacos 配置
 
-接下来，需要修改每一个微服务的application.yml文件，让微服务读取nacos中的client.properties文件：
+接下来，需要修改每一个微服务的 application.yml 文件，让微服务读取 nacos 中的 client.properties 文件：
 
 ```yaml
 seata:
@@ -399,7 +363,4 @@ seata:
       data-id: client.properties
 ```
 
-
-
-重启微服务，现在微服务到底是连接tc的SH集群，还是tc的HZ集群，都统一由nacos的client.properties来决定了。
-
+重启微服务，现在微服务到底是连接 tc 的 SH 集群，还是 tc 的 HZ 集群，都统一由 nacos 的 client.properties 来决定了。
