@@ -185,9 +185,7 @@ DockerHub：
 
 ## 1.4.安装 Docker
 
-企业部署一般都是采用 Linux 操作系统，而其中又数 CentOS 发行版占比最多，因此我们在 CentOS 下安装 Docker。参考课前资料中的文档：
-
-![image-20210731155002425](assets/image-20210731155002425.png){data-zoomable}
+企业部署一般都是采用 Linux 操作系统，而其中又数 CentOS 发行版占比最多，因此我们在 CentOS 下安装 Docker。 [CentOS7 安装 Docker](./Centos7-install-Docker)
 
 # 2.Docker 的基本操作
 
@@ -746,7 +744,7 @@ Compose 文件是一个文本文件，通过指令定义集群中的每个容器
 
 ```json
 version: "3.8"
- services:
+services:
   mysql:
     image: mysql:5.7.25
     environment:
@@ -772,7 +770,7 @@ DockerCompose 的详细语法参考官网：https://docs.docker.com/compose/comp
 
 ## 4.2.安装 DockerCompose
 
-参考课前资料
+[安装 DockerCompose](/docker/Centos7-install-Docker.html#_2-centos7-安装-dockercompose)
 
 ## 4.3.部署微服务集群
 

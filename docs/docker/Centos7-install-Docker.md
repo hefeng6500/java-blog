@@ -1,4 +1,4 @@
-# 0.安装 Docker
+# 安装 Docker
 
 Docker 分为 CE 和 EE 两大版本。CE 即社区版（免费，支持周期 7 个月），EE 即企业版，强调安全，付费使用，支持周期 24 个月。
 
@@ -106,7 +106,7 @@ Linux 下需要通过命令下载：
 
 ```sh
 # 安装
-curl -L https://github.com/docker/compose/releases/download/1.23.1/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose
+curl -L https://github.com/docker/compose/releases/download/v2.18.1/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose
 ```
 
 如果下载速度较慢，或者下载失败，可以使用课前资料提供的 docker-compose 文件：
@@ -126,7 +126,7 @@ chmod +x /usr/local/bin/docker-compose
 
 ```sh
 # 补全命令
-curl -L https://raw.githubusercontent.com/docker/compose/1.29.1/contrib/completion/bash/docker-compose > /etc/bash_completion.d/docker-compose
+curl -L https://raw.githubusercontent.com/docker/compose/v2.18.1/contrib/completion/bash/docker-compose > /etc/bash_completion.d/docker-compose
 ```
 
 如果这里出现错误，需要修改自己的 hosts 文件：
