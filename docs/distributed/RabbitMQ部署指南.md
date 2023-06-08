@@ -44,7 +44,7 @@ docker load -i mq.tar
 
 ```sh
 docker run \
- -e RABBITMQ_DEFAULT_USER=itcast \
+ -e RABBITMQ_DEFAULT_USER=hefeng6500 \
  -e RABBITMQ_DEFAULT_PASS=123321 \
  -v mq-plugins:/plugins \
  --name mq \
@@ -285,7 +285,7 @@ docker volume create
 docker run -d --net mq-net \
 -v ${PWD}/mq1/rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf \
 -v ${PWD}/.erlang.cookie:/var/lib/rabbitmq/.erlang.cookie \
--e RABBITMQ_DEFAULT_USER=itcast \
+-e RABBITMQ_DEFAULT_USER=hefeng6500 \
 -e RABBITMQ_DEFAULT_PASS=123321 \
 --name mq1 \
 --hostname mq1 \
@@ -300,7 +300,7 @@ rabbitmq:3.8-management
 docker run -d --net mq-net \
 -v ${PWD}/mq2/rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf \
 -v ${PWD}/.erlang.cookie:/var/lib/rabbitmq/.erlang.cookie \
--e RABBITMQ_DEFAULT_USER=itcast \
+-e RABBITMQ_DEFAULT_USER=hefeng6500 \
 -e RABBITMQ_DEFAULT_PASS=123321 \
 --name mq2 \
 --hostname mq2 \
@@ -315,7 +315,7 @@ rabbitmq:3.8-management
 docker run -d --net mq-net \
 -v ${PWD}/mq3/rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf \
 -v ${PWD}/.erlang.cookie:/var/lib/rabbitmq/.erlang.cookie \
--e RABBITMQ_DEFAULT_USER=itcast \
+-e RABBITMQ_DEFAULT_USER=hefeng6500 \
 -e RABBITMQ_DEFAULT_PASS=123321 \
 --name mq3 \
 --hostname mq3 \
@@ -572,7 +572,7 @@ docker stop mq1
 ```sh
 docker run -d --net mq-net \
 -v ${PWD}/.erlang.cookie:/var/lib/rabbitmq/.erlang.cookie \
--e RABBITMQ_DEFAULT_USER=itcast \
+-e RABBITMQ_DEFAULT_USER=hefeng6500 \
 -e RABBITMQ_DEFAULT_PASS=123321 \
 --name mq4 \
 --hostname mq5 \

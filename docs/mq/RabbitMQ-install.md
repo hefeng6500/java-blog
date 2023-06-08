@@ -44,7 +44,7 @@ docker load -i mq.tar
 
 ```sh
 docker run \
- -e RABBITMQ_DEFAULT_USER=itcast \
+ -e RABBITMQ_DEFAULT_USER=hefeng6500 \
  -e RABBITMQ_DEFAULT_PASS=123321 \
  --name mq \
  --hostname mq1 \
