@@ -224,15 +224,11 @@ elasticsearch 是面向**文档（Document）**存储的，可以是数据库中
 
 ### 1.4.1.安装
 
-参考课前资料：
-
-![image-20210720203805350](assets/image-20210720203805350.png){data-zoomable}
+[安装 elasticsearch](./install-elasticsearch.md)
 
 ### 1.4.2.分词器
 
-参考课前资料：
-
-![image-20210720203805350](assets/image-20210720203805350.png){data-zoomable}
+[安装 elasticsearch](./install-elasticsearch.md)
 
 ### 1.4.3.总结
 
@@ -490,7 +486,7 @@ GET /{索引库名称}/_doc/{id}
 **通过 kibana 查看数据：**
 
 ```js
-GET / heima / _doc / 1
+GET / heima / _doc / 1;
 ```
 
 **查看结果：**
@@ -504,7 +500,7 @@ GET / heima / _doc / 1
 **语法：**
 
 ```js
-DELETE / { 索引库名 } / _doc / id值
+DELETE / { 索引库名 } / _doc / id值;
 ```
 
 **示例：**
