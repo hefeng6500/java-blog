@@ -33,16 +33,16 @@ docker load -i es.tar
 
 ```sh
 docker run -d \
-	--name es \
+    --name elasticsearch \
     -e "ES_JAVA_OPTS=-Xms512m -Xmx512m" \
     -e "discovery.type=single-node" \
-    -v es-data:/usr/share/elasticsearch/data \
-    -v es-plugins:/usr/share/elasticsearch/plugins \
+    -v /home/docker/elasticsearch/es-data:/usr/share/elasticsearch/data \
+    -v /home/docker/elasticsearch/es-plugins:/usr/share/elasticsearch/plugins \
     --privileged \
     --network es-net \
     -p 9200:9200 \
     -p 9300:9300 \
-elasticsearch:7.12.1
+elasticsearch
 ```
 
 命令解释：
@@ -73,14 +73,14 @@ kibana 可以给我们提供一个 elasticsearch 的可视化界面，便于我�
 ```sh
 docker run -d \
 --name kibana \
--e ELASTICSEARCH_HOSTS=http://es:9200 \
+-e ELASTICSEARCH_HOSTS=http://elasticsearch:9200 \
 --network=es-net \
 -p 5601:5601  \
-kibana:7.12.1
+kibana
 ```
 
 - `--network es-net` ：加入一个名为 es-net 的网络中，与 elasticsearch 在同一个网络中
-- `-e ELASTICSEARCH_HOSTS=http://es:9200"`：设置 elasticsearch 的地址，因为 kibana 已经与 elasticsearch 在一个网络，因此可以用容器名直接访问 elasticsearch
+- `-e ELASTICSEARCH_HOSTS=http://elasticsearch:9200"`：设置 elasticsearch 的地址，因为 kibana 已经与 elasticsearch 在一个网络，因此可以用容器名直接访问 elasticsearch
 - `-p 5601:5601`：端口映射配置
 
 kibana 启动一般比较慢，需要多等待一会，可以通过命令：
