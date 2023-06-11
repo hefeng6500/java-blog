@@ -100,6 +100,18 @@ docker 官方镜像仓库网速较差，我们需要设置国内镜像服务：
 
 # 2.CentOS7 安装 DockerCompose
 
+::: tip
+**推荐安装方式**
+
+进入 github(https://github.com/docker/compose/releases) 查看相关版本，下载到本地，再上传值服务器，将其命名为 docker-compose，放到 `/usr/local/bin/` 目录下 ，再执行权限：
+`sudo chmod +x /usr/local/bin/docker-compose`
+
+**原因：**
+
+- 尝试使用官方地址下载速度很慢
+- 使用国内镜像出现各种问题
+  :::
+
 ## 2.1.下载
 
 Linux 下需要通过命令下载：
