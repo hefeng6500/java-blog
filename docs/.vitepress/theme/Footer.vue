@@ -8,9 +8,7 @@
     </span>
 
     <span class="icp">
-      ICP备案/许可证号：<a
-        href="https://beian.miit.gov.cn/#/Integrated/index"
-        target="_blank"
+      <a href="https://beian.miit.gov.cn/#/Integrated/index" target="_blank"
         >粤ICP备2023071077号</a
       >
     </span>
@@ -25,6 +23,7 @@
   bottom: 0;
   left: 50%;
   transform: translateX(-50%);
+  width: 100%;
   padding: 20px;
   background: #fff;
   text-align: center;
