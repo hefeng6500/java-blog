@@ -32,17 +32,27 @@ docker load -i es.tar
 运行 docker 命令，部署单点 es：
 
 ```sh
+docker volume create es-data
+
+docker volume create es-plugins
+```
+
+```sh
+docker volume inspect es-plugins
+```
+
+```sh
 docker run -d \
     --name elasticsearch \
     -e "ES_JAVA_OPTS=-Xms512m -Xmx512m" \
     -e "discovery.type=single-node" \
-    -v /home/docker/elasticsearch/es-data:/usr/share/elasticsearch/data \
-    -v /home/docker/elasticsearch/es-plugins:/usr/share/elasticsearch/plugins \
+    -v es-data:/usr/share/elasticsearch/data \
+    -v es-plugins:/usr/share/elasticsearch/plugins \
     --privileged \
     --network es-net \
     -p 9200:9200 \
     -p 9300:9300 \
-elasticsearch
+elasticsearch:7.12.1
 ```
 
 命令解释：
@@ -76,7 +86,7 @@ docker run -d \
 -e ELASTICSEARCH_HOSTS=http://elasticsearch:9200 \
 --network=es-net \
 -p 5601:5601  \
-kibana
+kibana:7.12.1
 ```
 
 - `--network es-net` ：加入一个名为 es-net 的网络中，与 elasticsearch 在同一个网络中

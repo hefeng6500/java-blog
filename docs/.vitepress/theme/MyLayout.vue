@@ -7,6 +7,7 @@ import UtterancCommment from "../../components/UtterancCommment/index.vue";
 import { useRouter } from "vitepress";
 import { onMounted } from "vue";
 import { generateTongji } from "../utils";
+import Footer from "./Footer.vue";
 
 const { Layout } = DefaultTheme;
 const enableComment = ref(true);
@@ -49,6 +50,9 @@ watch(
       <div class="record">
         <img v-if="badge" :src="badge" alt />
       </div>
+    </template>
+    <template #home-hero-after>
+      <Footer />
     </template>
   </Layout>
 </template>
