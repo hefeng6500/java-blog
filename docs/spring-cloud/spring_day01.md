@@ -639,7 +639,7 @@ ribbon:
 
 ![image-20210713230444308](assets/image-20210713230444308.png){data-zoomable}
 
-安装方式可以参考课前资料《Nacos 安装指南.md》
+安装方式可以参考课前资料 [Nacos 安装指南](./install-Nacos)
 
 ## 5.2.服务注册到 nacos
 
