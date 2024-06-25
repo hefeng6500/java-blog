@@ -10,7 +10,7 @@ const useBaiduTongji = () => {
 
 const useGoogleTongji = () => {
   // <!-- Global site tag (gtag.js) - Google Analytics -->
-  const ids = ["G-7ZRW1S0EGF", "G-46CFH1BXTK"]; // github.io, gitee.io
+  const ids = ["G-35KQ2DGY11", "G-P8CKY3ELPB"]; // www.hefeng6500.cn, github.io,
 
   const helper = (id) => {
     const script = document.createElement("script");
